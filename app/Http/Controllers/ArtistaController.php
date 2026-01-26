@@ -52,5 +52,4 @@ class ArtistaController extends Controller
         $artista->delete();
         return response()->json(['message' => 'Artista excluído'], 200);
     }
-
 }
