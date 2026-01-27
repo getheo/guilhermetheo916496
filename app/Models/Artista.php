@@ -9,15 +9,20 @@ class Artista extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'nome',
-        'descricao',
-        'nacionalidade',
-        'status',
-    ];
+    // Nome da tabela associada à model (opcional)
+    protected $table = 'artista';
+
+    // Ajustar o primary key
+    protected $primaryKey = 'art_id';
+    //public $incrementing = true;
+    
+
+    // Colunas que podem ser preenchidas em massa (opcional)
+    protected $fillable = ['art_id', 'art_nome', 'art_descricao', 'art_nacionalidade', 'art_status'];
 
     public function albuns()
     {
         return $this->hasMany(Album::class);
-    }
+    }    
+
 }

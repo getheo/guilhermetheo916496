@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('albuns', function (Blueprint $table) {
+        Schema::create('album', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('artista_id')->foreign()->references('id')->on('artistas')->onDelete('cascade');            
+            $table->unsignedBigInteger('artista_id')->foreign()->references('id')->on('artista')->onDelete('cascade');            
             $table->string('titulo');
             $table->date('data_lancamento')->nullable();            
             $table->boolean('status')->default(true);
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('albuns');
+        Schema::dropIfExists('album');
     }
 };
