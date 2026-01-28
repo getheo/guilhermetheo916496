@@ -30,7 +30,7 @@ class AuthController extends Controller
     *         in="query",
     *         description="Insira a senha",
     *         required=true,
-    *         example="seplag2025",
+    *         example="seplag2026",
     *         @OA\MediaType(
     *            mediaType="application/json",
     *         ),
@@ -86,7 +86,7 @@ class AuthController extends Controller
     *         in="query",
     *         description="Insira a senha",
     *         required=true,
-    *         example="seplag2025",
+    *         example="seplag2026",
     *         @OA\MediaType(
     *            mediaType="application/json",
     *         ),

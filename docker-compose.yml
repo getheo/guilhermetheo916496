@@ -3,7 +3,7 @@
 services:
   app:
     build: .
-    image: api-seletivo-seplag:1.0.0
+    image: api-seletivo-seplag:1.0.3
     container_name: api-seletivo-seplag
     restart: unless-stopped
     working_dir: /var/www/html

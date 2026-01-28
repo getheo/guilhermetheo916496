@@ -32,7 +32,7 @@ class MusicaController extends Controller
     */
     public function index()
     {
-        $musica = Musica::with(['musicaAlbum'])->paginate(10);
+        $musica = Musica::with(['album'])->paginate(10);
         return response()->json($musica);
     }
     
@@ -66,7 +66,7 @@ class MusicaController extends Controller
     */
     public function show(string $mus_id)
     {
-        $musica = Musica::where('mus_id', $mus_id)->with(['musicaAlbum'])->first();        
+        $musica = Musica::where('mus_id', $mus_id)->with(['album'])->first();
 
         if (!$musica) {
             //return response('Não encontrado', 404)->json();
@@ -153,7 +153,6 @@ class MusicaController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=400, description="Requisição inválida"),
      *     @OA\Response(response=404, description="Musica não encontrado"),
      *     security={{"bearerAuth":{}}}
      * )

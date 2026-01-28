@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             AlbumSeeder::class,
             MusicaSeeder::class,
             UserSeeder::class,            
+            RegionalSeeder::class,            
         ]);
 
         // \App\Models\User::factory(10)->create();

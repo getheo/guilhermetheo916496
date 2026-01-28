@@ -32,7 +32,7 @@ class AlbumController extends Controller
     */
     public function index()
     {
-        $album = Album::with(['artistaAlbum'])->paginate(10);
+        $album = Album::with(['artista'])->paginate(10);
         return response()->json($album);
     }
     
@@ -153,8 +153,7 @@ class AlbumController extends Controller
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=400, description="Requisição inválida"),
-     *     @OA\Response(response=404, description="Endereco não encontrado"),
+     *     @OA\Response(response=400, description="Endereco não encontrado"),
      *     security={{"bearerAuth":{}}}
      * )
      */

@@ -25,11 +25,10 @@ class RegionalSeeder extends Seeder
             // Caso a API retorne um array direto ou esteja no campo data, adapte conforme necessário
             foreach ($regionais as $item) {
                 Regional::updateOrCreate(
-                    ['id_externo' => $item['id']], // campo de chave única opcional
+                    ['id' => $item['id']],
                     [
-                        'nome' => $item['nome'] ?? null,
-                        'codigo' => $item['codigo'] ?? null,
-                        // adicione aqui os campos que você quer salvar
+                        'nome' => $item['nome'] ?? null,                        
+                        'ativo' => $item['ativo'] ?? true,                        
                     ]
                 );
             }

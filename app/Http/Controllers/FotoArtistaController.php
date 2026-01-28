@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
-use App\Models\FotoAlbum;
+use App\Models\FotoArtista;
 use App\Models\Artista;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,19 +11,19 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
 
-class FotoAlbumController extends Controller
+class FotoArtistaController extends Controller
 {
     /**
      * Upload de Arquivo
      *
      * @OA\POST(
-     *     path="/api/foto-album",
-     *     summary="Faz o upload de uma foto de album",
+     *     path="/api/foto-artista",
+     *     summary="Faz o upload de uma foto de artista",
      *     tags={"Foto Upload"},
      *     @OA\Parameter(
-     *         name="alb_id",
+     *         name="art_id",
      *         in="query",
-     *         description="Nº de identificação do Album",
+     *         description="Nº de identificação do Artista",
      *         required=true,
      *     ),
      *     @OA\RequestBody(
@@ -41,7 +41,7 @@ class FotoAlbumController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Imagem do Album enviado com sucesso",
+     *         description="Imagem do Artista enviado com sucesso",
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean"),
      *             @OA\Property(property="message", type="string"),
@@ -56,22 +56,22 @@ class FotoAlbumController extends Controller
     
     public function upload(Request $request)
     {
-        $album = Album::where('id', $request->alb_id)->first();
+        $artista = Artista::where('id', $request->art_id)->first();
 
         $request->validate([
-            'alb_id' => 'required|integer',
+            'art_id' => 'required|integer',
             'file' => 'required|image|mimes:jpg,jpeg|max:10240',
         ]);
 
-        if(!$album){
-            return response()->json(['message' => 'Album não encontrado', 404]);
+        if(!$artista){
+            return response()->json(['message' => 'Artista não encontrado', 404]);
         }        
         
-        $path = $request->file('file')->store('album/'.$request->alb_id, 's3');
+        $path = $request->file('file')->store('artista/'.$request->art_id, 's3');
         //$path = Storage::disk('s3')->put('uploads/{$request->art_id}', $request->file('file'));
         
-        $foto = FotoAlbum::create([
-            'album_id' => $album->art_id,
+        $foto = FotoArtista::create([
+            'artista_id' => $artista->id,
             'fa_data' => Carbon::now(),
             'fa_bucket' => env('AWS_BUCKET'),
             'fa_hash' => $path,

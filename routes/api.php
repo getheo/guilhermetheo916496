@@ -7,6 +7,8 @@ use App\Http\Controllers\MusicaController;
 use App\Http\Controllers\FotoAlbumController;
 
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\FotoArtistaController;
+use App\Http\Controllers\RegionalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,10 +49,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('musica/{mus_id}', [MusicaController::class, 'destroy']);
 
     /* Rotas para os Foto Albuns */
-    //Route::get('foto-album', [FotoAlbumController::class, 'index']);
-    
+    //Route::get('foto-album', [FotoAlbumController::class, 'index']);    
     Route::post('foto-album', [FotoAlbumController::class, 'upload']);
+
+    /* Rotas para os Foto Artistas */
+    Route::post('foto-artista', [FotoArtistaController::class, 'upload']);
     //Route::post('foto-pessoa', [FileController::class, 'store']);
+
+    /* Rotas para os Regionais */
+    Route::get('regional', [RegionalController::class, 'index']);
 
 });
 

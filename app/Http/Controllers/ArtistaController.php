@@ -32,7 +32,7 @@ class ArtistaController extends Controller
     */
     public function index()
     {
-        $artista = Artista::with(['artistaAlbum'])->paginate(10);
+        $artista = Artista::with(['albuns'])->orderBy('art_nome')->paginate(10);
         return response()->json($artista);
     }
     
@@ -66,7 +66,7 @@ class ArtistaController extends Controller
     */
     public function show(string $art_id)
     {
-        $artista = Artista::where('art_id', $art_id)->with(['artistaAlbum'])->first();        
+        $artista = Artista::where('art_id', $art_id)->with(['albuns'])->first();        
 
         if (!$artista) {
             //return response('Não encontrado', 404)->json();

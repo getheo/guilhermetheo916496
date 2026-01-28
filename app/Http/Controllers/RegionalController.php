@@ -31,7 +31,7 @@ class RegionalController extends Controller
     */
     public function index()
     {
-        $regional = Regional::paginate(10);
+        $regional = Regional::orderBy('nome')->paginate(10);
         return response()->json($regional);
     }
 }

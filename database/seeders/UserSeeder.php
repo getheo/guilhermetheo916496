@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             User::create([                
                 'name' => "Seplag",
                 'email' => 'teste@seplag.mt.gov.br',
-                'password' => Hash::make('seplag2025'),
+                'password' => Hash::make('seplag2026'),
             ]);
         }
     }

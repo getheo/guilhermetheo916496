@@ -22,7 +22,7 @@ class Musica extends Model
 
     public function album()
     {
-        return $this->belongsTo(Album::class, 'alb_id');
+        return $this->belongsTo(Album::class, 'album_id');
     }
 
 }

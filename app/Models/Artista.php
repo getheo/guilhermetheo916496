@@ -23,6 +23,5 @@ class Artista extends Model
     public function albuns()
     {
         return $this->hasMany(Album::class);
-    }    
-
+    }
 }
