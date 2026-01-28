@@ -30,7 +30,7 @@ services:
     command: >
       sh -c "chmod -R 777 storage bootstrap/cache &&
             chown -R www-data:www-data storage bootstrap/cache &&
-            sleep 5 &&
+            sleep 10 &&
             php artisan key:generate &&
             php artisan migrate --seed --force &&
             php artisan l5-swagger:generate &&
