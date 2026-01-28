@@ -13,12 +13,12 @@ class Musica extends Model
     protected $table = 'musica';
 
     // Ajustar o primary key
-    protected $primaryKey = 'mus_id';
+    //protected $primaryKey = 'mus_id';
     //public $incrementing = true; 
     
 
     // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['mus_nome', 'mus_duracao', 'mus_genero', 'alb_id'];
+    protected $fillable = ['mus_nome', 'mus_duracao', 'mus_genero', 'album_id'];
 
     public function album()
     {

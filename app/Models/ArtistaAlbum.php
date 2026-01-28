@@ -15,20 +15,20 @@ class ArtistaAlbum extends Model
     protected $table = 'artista_album';
 
     // Ajustar primary key
-    protected $primaryKey = 'art_alb_id';
+    //protected $primaryKey = 'art_alb_id';
     //public $incrementing = true;
 
 
     // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['art_id', 'alb_id'];
+    protected $fillable = ['artista_id', 'album_id'];
 
     public function artista(): BelongsTo
     {
-        return $this->belongsTo(Artista::class, 'art_id');
+        return $this->belongsTo(Artista::class, 'artista_id');
     }
 
     public function album()
     {
-        return $this->belongsTo(Album::class, 'alb_id');
+        return $this->belongsTo(Album::class, 'album_id');
     }
 }

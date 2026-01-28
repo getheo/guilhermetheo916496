@@ -13,12 +13,12 @@ class Album extends Model
     protected $table = 'album';
 
     // Ajustar o primary key
-    protected $primaryKey = 'alb_id';
+    //protected $primaryKey = 'alb_id';
     //public $incrementing = true; 
     
 
     // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['alb_nome', 'alb_descricao', 'alb_data_lancamento', 'art_id'];
+    protected $fillable = ['alb_nome', 'alb_descricao', 'alb_data_lancamento', 'artista_id'];
 
     public function artista()
     {

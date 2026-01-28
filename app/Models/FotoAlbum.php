@@ -14,15 +14,15 @@ class FotoAlbum extends Model
     protected $table = 'foto_album';
 
     // Ajustar o primary key
-    protected $primaryKey = 'fa_id';
+    //protected $primaryKey = 'fa_id';
     //public $incrementing = true;
     
 
     // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['alb_id', 'fp_data', 'fp_bucket', 'fp_hash'];
+    protected $fillable = ['album_id', 'fa_data', 'fa_bucket', 'fa_hash'];
 
     public function album(): HasOne
     {
-        return $this->HasOne(Album::class, 'alb_id');
+        return $this->HasOne(Album::class, 'album_id');
     }
 }

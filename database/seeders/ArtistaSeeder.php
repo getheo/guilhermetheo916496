@@ -13,61 +13,61 @@ class ArtistaSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!Artista::where('art_nome', 'Serj Tankian')->first()) {
+        if (!Artista::where('id', 1)->first()) {
             Artista::create([                                
                 'art_nome' => 'Serj Tankian',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Mike Shinoda')->first()) {
+        if (!Artista::where('id', 2)->first()) {
             Artista::create([                                
                 'art_nome' => 'Mike Shinoda',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Michel Teló')->first()) {
+        if (!Artista::where('id', 3)->first()) {
             Artista::create([                                
                 'art_nome' => 'Michel Teló',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Guns N Roses')->first()) {
+        if (!Artista::where('id', 4)->first()) {
             Artista::create([                                
                 'art_nome' => 'Guns N Roses',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Henrique e Juliano')->first()) {
+        if (!Artista::where('id', 5)->first()) {
             Artista::create([                                
                 'art_nome' => 'Henrique e Juliano',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Alceu Valença')->first()) {
+        if (!Artista::where('id', 6)->first()) {
             Artista::create([                                
                 'art_nome' => 'Alceu Valença',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Roberto Carlos')->first()) {
+        if (!Artista::where('id', 7)->first()) {
             Artista::create([                                
                 'art_nome' => 'Roberto Carlos',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Banda Scort Som')->first()) {
+        if (!Artista::where('id', 8)->first()) {
             Artista::create([                                
                 'art_nome' => 'Banda Scort Som',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Lucianinho dos Teclados')->first()) {
+        if (!Artista::where('id', 9)->first()) {
             Artista::create([                                
                 'art_nome' => 'Lucianinho dos Teclados',                
             ]);
         }
 
-        if (!Artista::where('art_nome', 'Banda Novo Som')->first()) {
+        if (!Artista::where('id', 10)->first()) {
             Artista::create([                                
                 'art_nome' => 'Banda Novo Som',                
             ]);

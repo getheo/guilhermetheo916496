@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('artista', function (Blueprint $table) {
-            $table->id();
-            $table->string('nome');
-            $table->text('descricao')->nullable();            
-            $table->boolean('status')->default(true);
+            $table->id();            
+            $table->string('art_nome');
+            $table->text('art_descricao')->nullable();            
+            $table->boolean('art_status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });
