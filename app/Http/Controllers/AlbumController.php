@@ -39,12 +39,12 @@ class AlbumController extends Controller
         
     /**
     *  @OA\GET(
-    *      path="/api/album/{alb_id}",
+    *      path="/api/album/{id}",
     *      summary="Mostra um Album",
-    *      description="Pesquisa por um album através do (alb_id)",
+    *      description="Pesquisa por um album através do (id)",
     *      tags={"Albuns"},
     *     @OA\Parameter(
-     *         name="alb_id",
+     *         name="id",
      *         in="path",
      *         required=true,
      *         description="Nº de identificação do album",
@@ -64,9 +64,9 @@ class AlbumController extends Controller
     *      security={{"bearerAuth":{}}}
     *  )
     */
-    public function show(string $alb_id)
+    public function show(string $id)
     {
-        $album = Album::where('alb_id', $alb_id)->with(['artistaAlbum'])->first();        
+        $album = Album::where('id', $id)->with(['artista'])->first();        
 
         if (!$album) {
             //return response('Não encontrado', 404)->json();
@@ -87,9 +87,15 @@ class AlbumController extends Controller
     *      description="Registra um novo Album",
     *      tags={"Albuns"},
     *     @OA\Parameter(
-    *         name="alb_nome",
+    *         name="artista_id",
     *         in="query",
-    *         description="Nome",
+    *         description="ID do artista",
+    *         required=true,
+    *      ),
+    *     @OA\Parameter(
+    *         name="alb_titulo",
+    *         in="query",
+    *         description="Titulo",
     *         required=true,
     *      ),
     *      @OA\Response(
@@ -108,19 +114,21 @@ class AlbumController extends Controller
     */
     public function store(Request $request)
     {
-        $album = Album::where('alb_nome', $request->alb_nome)->first();  
+        $album = Album::where('alb_titulo', $request->alb_titulo)->first();  
 
         if (!$album) {             
 
             $validadeData = $request->validate([            
-                'alb_nome' => 'required|string',
+                'alb_titulo' => 'required|string',
+                'artista_id' => 'required|integer',
             ]);
 
             $album = Album::create([            
-                'alb_nome' => $validadeData['alb_nome'],
+                'alb_titulo' => $validadeData['alb_titulo'],
+                'artista_id' => $validadeData['artista_id'],
             ]);
             
-            return response()->json(['message' => 'Album cadastrado com sucesso.','album' => $album], 200);
+            return response()->json(['message' => 'Album cadastrado e vinculado ao artista com sucesso.','album' => $album], 200);
         }
 
         return response()->json(['message' => 'Album com esse nome já cadastrada.', 404]);
@@ -133,16 +141,16 @@ class AlbumController extends Controller
     
     /**
      * @OA\PUT(
-     *     path="/api/album/{alb_id}",
+     *     path="/api/album/{id}",
      *     summary="Atualizar dados de um Album",
-     *     description="Editar os dados de um album através do (alb_id)",
+     *     description="Editar os dados de um album através do (id)",
      *     tags={"Albuns"},     
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"alb_id", "alb_nome"},
-     *             @OA\Property(property="alb_id", type="integer", example="1"),
-     *             @OA\Property(property="alb_nome", type="string", example="Nome album"),     
+     *             required={"artista_id", "alb_titulo"},
+     *             @OA\Property(property="artista_id", type="integer", example="1"),
+     *             @OA\Property(property="alb_titulo", type="string", example="Titulo album"),     
      *         )
      *     ),
      *     @OA\Response(
@@ -161,8 +169,8 @@ class AlbumController extends Controller
     public function update(Request $request, Album $album)
     {
         $validadeData = $request->validate([
-            'alb_id' => 'required|integer',
-            'alb_nome' => 'required|string',
+            'artista_id' => 'required|integer',
+            'alb_titulo' => 'required|string',
         ]);
 
         $album->update($validadeData);
@@ -172,12 +180,12 @@ class AlbumController extends Controller
 
     /**
     *  @OA\DELETE(
-    *      path="/api/album/{alb_id}",
+    *      path="/api/album/{id}",
     *      summary="Exclui um Album",
-    *      description="Exclui um album através do (alb_id)",
+    *      description="Exclui um album através do (id)",
     *      tags={"Albuns"},
     *     @OA\Parameter(
-     *         name="alb_id",
+     *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID do album",

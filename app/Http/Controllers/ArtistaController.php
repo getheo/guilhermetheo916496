@@ -39,12 +39,12 @@ class ArtistaController extends Controller
         
     /**
     *  @OA\GET(
-    *      path="/api/artista/{art_id}",
+    *      path="/api/artista/{id}",
     *      summary="Mostra um Artista",
-    *      description="Pesquisa por um artista através do (art_id)",
+    *      description="Pesquisa por um artista através do (id)",
     *      tags={"Artistas"},
     *     @OA\Parameter(
-     *         name="art_id",
+     *         name="id",
      *         in="path",
      *         required=true,
      *         description="Nº de identificação do artista",
@@ -64,9 +64,9 @@ class ArtistaController extends Controller
     *      security={{"bearerAuth":{}}}
     *  )
     */
-    public function show(string $art_id)
+    public function show(string $id)
     {
-        $artista = Artista::where('art_id', $art_id)->with(['albuns'])->first();        
+        $artista = Artista::where('id', $id)->with(['albuns'])->first();        
 
         if (!$artista) {
             //return response('Não encontrado', 404)->json();
@@ -92,6 +92,12 @@ class ArtistaController extends Controller
     *         description="Nome",
     *         required=true,
     *      ),
+    *     @OA\Parameter(
+    *         name="art_descricao",
+    *         in="query",
+    *         description="Descrição",
+    *         required=true,
+    *      ),
     *      @OA\Response(
     *          response=200,
     *          description="OK",
@@ -114,10 +120,12 @@ class ArtistaController extends Controller
 
             $validadeData = $request->validate([            
                 'art_nome' => 'required|string',
+                'art_descricao' => 'required|string',
             ]);
 
             $artista = Artista::create([            
                 'art_nome' => $validadeData['art_nome'],
+                'art_descricao' => $validadeData['art_descricao'],
             ]);
             
             return response()->json(['message' => 'Artista cadastrado com sucesso.','artista' => $artista], 200);
@@ -135,23 +143,24 @@ class ArtistaController extends Controller
     
     /**
      * @OA\PUT(
-     *     path="/api/artista/{art_id}",
+     *     path="/api/artista/{id}",
      *     summary="Atualizar dados de um Artista",
-     *     description="Editar os dados de um artista através do (art_id)",
+     *     description="Editar os dados de um artista através do (id)",
      *     tags={"Artistas"},     
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"art_id", "art_nome"},
-     *             @OA\Property(property="art_id", type="integer", example="1"),
-     *             @OA\Property(property="art_nome", type="string", example="Nome artista"),     
+     *             required={"id", "art_nome", "art_descricao"},
+     *             @OA\Property(property="id", type="integer", example="1"),
+     *             @OA\Property(property="art_nome", type="string", example="Nome artista"),
+     *             @OA\Property(property="art_descricao", type="string", example="Descrição artista"),     
      *         )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Artista atualizado com sucesso",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Endereço atualizado com sucesso"),
+     *             @OA\Property(property="message", type="string", example="Artista atualizado com sucesso"),
      *             @OA\Property(property="artista", type="object",
      *             @OA\Property(property="art_nome", type="string", example="Nome Artista")
      *             )
@@ -166,8 +175,9 @@ class ArtistaController extends Controller
     public function update(Request $request, Artista $artista)
     {
         $validadeData = $request->validate([
-            'art_id' => 'required|integer',
+            'id' => 'required|integer',
             'art_nome' => 'required|string',
+            'art_descricao' => 'required|string',
         ]);
 
         $artista->update($validadeData);
@@ -177,12 +187,12 @@ class ArtistaController extends Controller
 
     /**
     *  @OA\DELETE(
-    *      path="/api/artista/{art_id}",
+    *      path="/api/artista/{id}",
     *      summary="Exclui um Artista",
-    *      description="Exclui um artista através do (art_id)",
+    *      description="Exclui um artista através do (id)",
     *      tags={"Artistas"},
     *     @OA\Parameter(
-     *         name="art_id",
+     *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID do artista",

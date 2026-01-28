@@ -32,24 +32,24 @@ class MusicaController extends Controller
     */
     public function index()
     {
-        $musica = Musica::with(['album'])->paginate(10);
+        $musica = Musica::with(['album'])->orderBy('mus_titulo')->paginate(10);
         return response()->json($musica);
     }
     
         
     /**
     *  @OA\GET(
-    *      path="/api/musica/{mus_id}",
+    *      path="/api/musica/{id}",
     *      summary="Mostra uma Musica",
-    *      description="Pesquisa por uma musica através do (mus_id)",
+    *      description="Pesquisa por uma musica através do (id)",
     *      tags={"Musicas"},
     *     @OA\Parameter(
-     *         name="mus_id",
-     *         in="path",
-     *         required=true,
-     *         description="Nº de identificação da musica",
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+    *         name="id",
+    *         in="path",
+    *         required=true,
+    *         description="Nº de identificação da musica",
+    *         @OA\Schema(type="integer", example=1)
+    *     ),
     *      @OA\Response(
     *          response=200,
     *          description="Musica Encontrada",
@@ -64,9 +64,9 @@ class MusicaController extends Controller
     *      security={{"bearerAuth":{}}}
     *  )
     */
-    public function show(string $mus_id)
+    public function show(string $id)
     {
-        $musica = Musica::where('mus_id', $mus_id)->with(['album'])->first();
+        $musica = Musica::where('id', $id)->with(['album'])->first();
 
         if (!$musica) {
             //return response('Não encontrado', 404)->json();
@@ -92,6 +92,13 @@ class MusicaController extends Controller
     *         description="Titulo da Musica",
     *         required=true,
     *      ),
+    *     @OA\Parameter(
+    *         name="album_id",
+    *         in="path",
+    *         required=true,
+    *         description="Nº de identificação do Album",
+    *         @OA\Schema(type="integer", example=1)
+    *     ),    
     *      @OA\Response(
     *          response=200,
     *          description="OK",
@@ -133,15 +140,16 @@ class MusicaController extends Controller
     
     /**
      * @OA\PUT(
-     *     path="/api/musica/{mus_id}",
+     *     path="/api/musica/{id}",
      *     summary="Atualizar dados de uma Musica",
-     *     description="Editar os dados de uma musica através do (mus_id)",
+     *     description="Editar os dados de uma musica através do (id)",
      *     tags={"Musicas"},     
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"mus_id", "mus_titulo"},
-     *             @OA\Property(property="mus_id", type="integer", example="1"),
+     *             required={"id", "album_id", "mus_titulo"},
+     *             @OA\Property(property="id", type="integer", example="1"),
+     *             @OA\Property(property="album_id", type="integer", example="1"),
      *             @OA\Property(property="mus_titulo", type="string", example="Nome musica"),     
      *         )
      *     ),
@@ -161,7 +169,8 @@ class MusicaController extends Controller
     public function update(Request $request, Musica $musica)
     {
         $validadeData = $request->validate([
-            'mus_id' => 'required|integer',
+            'id' => 'required|integer',
+            'album_id' => 'required|integer',
             'mus_titulo' => 'required|string',
         ]);
 
@@ -172,12 +181,12 @@ class MusicaController extends Controller
 
     /**
     *  @OA\DELETE(
-    *      path="/api/musica/{mus_id}",
+    *      path="/api/musica/{id}",
     *      summary="Exclui uma Musica",
-    *      description="Exclui uma musica através do (mus_id)",
+    *      description="Exclui uma musica através do (id)",
     *      tags={"Musicas"},
     *     @OA\Parameter(
-     *         name="mus_id",
+     *         name="id",
      *         in="path",
      *         required=true,
      *         description="ID do musica",

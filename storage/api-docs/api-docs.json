@@ -44,9 +44,15 @@
                 "operationId": "7ef6c3ec7824931c32af2fe12f80514d",
                 "parameters": [
                     {
-                        "name": "alb_nome",
+                        "name": "artista_id",
                         "in": "query",
-                        "description": "Nome",
+                        "description": "ID do artista",
+                        "required": true
+                    },
+                    {
+                        "name": "alb_titulo",
+                        "in": "query",
+                        "description": "Titulo",
                         "required": true
                     }
                 ],
@@ -68,17 +74,17 @@
                 ]
             }
         },
-        "/api/album/{alb_id}": {
+        "/api/album/{id}": {
             "get": {
                 "tags": [
                     "Albuns"
                 ],
                 "summary": "Mostra um Album",
-                "description": "Pesquisa por um album através do (alb_id)",
-                "operationId": "83a50396f0d1be37d8ef08914a1315b2",
+                "description": "Pesquisa por um album através do (id)",
+                "operationId": "9b91d3bf023c51c24c0b2aad84a3f4d9",
                 "parameters": [
                     {
-                        "name": "alb_id",
+                        "name": "id",
                         "in": "path",
                         "description": "Nº de identificação do album",
                         "required": true,
@@ -110,25 +116,25 @@
                     "Albuns"
                 ],
                 "summary": "Atualizar dados de um Album",
-                "description": "Editar os dados de um album através do (alb_id)",
-                "operationId": "6c207874928b77946b8a90987c7bb99b",
+                "description": "Editar os dados de um album através do (id)",
+                "operationId": "a389aa3f7a8e77e625a09a54e42ef1c1",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "alb_id",
-                                    "alb_nome"
+                                    "artista_id",
+                                    "alb_titulo"
                                 ],
                                 "properties": {
-                                    "alb_id": {
+                                    "artista_id": {
                                         "type": "integer",
                                         "example": "1"
                                     },
-                                    "alb_nome": {
+                                    "alb_titulo": {
                                         "type": "string",
-                                        "example": "Nome album"
+                                        "example": "Titulo album"
                                     }
                                 },
                                 "type": "object"
@@ -160,11 +166,11 @@
                     "Albuns"
                 ],
                 "summary": "Exclui um Album",
-                "description": "Exclui um album através do (alb_id)",
-                "operationId": "05cbfe7da6ab3aa0cc58363bed3cf16e",
+                "description": "Exclui um album através do (id)",
+                "operationId": "09aee5d28508e14a14b9558226622b3a",
                 "parameters": [
                     {
-                        "name": "alb_id",
+                        "name": "id",
                         "in": "path",
                         "description": "ID do album",
                         "required": true,
@@ -275,6 +281,12 @@
                         "in": "query",
                         "description": "Nome",
                         "required": true
+                    },
+                    {
+                        "name": "art_descricao",
+                        "in": "query",
+                        "description": "Descrição",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -295,17 +307,17 @@
                 ]
             }
         },
-        "/api/artista/{art_id}": {
+        "/api/artista/{id}": {
             "get": {
                 "tags": [
                     "Artistas"
                 ],
                 "summary": "Mostra um Artista",
-                "description": "Pesquisa por um artista através do (art_id)",
-                "operationId": "6274b9b0e8feb7607f9b2f2fd65b34e1",
+                "description": "Pesquisa por um artista através do (id)",
+                "operationId": "7f15968063fb6e299a3574a3a4aad99b",
                 "parameters": [
                     {
-                        "name": "art_id",
+                        "name": "id",
                         "in": "path",
                         "description": "Nº de identificação do artista",
                         "required": true,
@@ -337,25 +349,30 @@
                     "Artistas"
                 ],
                 "summary": "Atualizar dados de um Artista",
-                "description": "Editar os dados de um artista através do (art_id)",
-                "operationId": "62a8a7197054b24812dea4c4bade88b4",
+                "description": "Editar os dados de um artista através do (id)",
+                "operationId": "ad7ddf3d1210e2353559d9a6e7e29d45",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "art_id",
-                                    "art_nome"
+                                    "id",
+                                    "art_nome",
+                                    "art_descricao"
                                 ],
                                 "properties": {
-                                    "art_id": {
+                                    "id": {
                                         "type": "integer",
                                         "example": "1"
                                     },
                                     "art_nome": {
                                         "type": "string",
                                         "example": "Nome artista"
+                                    },
+                                    "art_descricao": {
+                                        "type": "string",
+                                        "example": "Descrição artista"
                                     }
                                 },
                                 "type": "object"
@@ -372,7 +389,7 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Endereço atualizado com sucesso"
+                                            "example": "Artista atualizado com sucesso"
                                         },
                                         "artista": {
                                             "properties": {
@@ -407,11 +424,11 @@
                     "Artistas"
                 ],
                 "summary": "Exclui um Artista",
-                "description": "Exclui um artista através do (art_id)",
-                "operationId": "231dc0c88fd150916006c00ef034ac4b",
+                "description": "Exclui um artista através do (id)",
+                "operationId": "d083dded75c0c9de9e0b5b3007c231c4",
                 "parameters": [
                     {
-                        "name": "art_id",
+                        "name": "id",
                         "in": "path",
                         "description": "ID do artista",
                         "required": true,
@@ -527,6 +544,71 @@
                 "operationId": "665617137aa8a9d1c360a2ea91d98dc9",
                 "parameters": [
                     {
+                        "name": "alb_id",
+                        "in": "query",
+                        "description": "Nº de identificação do Album",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Imagem do Album enviado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "file": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro no upload"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/foto-artista": {
+            "post": {
+                "tags": [
+                    "Foto Upload"
+                ],
+                "summary": "Faz o upload de uma foto de artista",
+                "description": "Upload de Arquivo",
+                "operationId": "b2259c653746dd8c6a2c15719ea88d8e",
+                "parameters": [
+                    {
                         "name": "art_id",
                         "in": "query",
                         "description": "Nº de identificação do Artista",
@@ -551,7 +633,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Arquivo enviado com sucesso",
+                        "description": "Imagem do Artista enviado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -625,6 +707,16 @@
                         "in": "query",
                         "description": "Titulo da Musica",
                         "required": true
+                    },
+                    {
+                        "name": "album_id",
+                        "in": "path",
+                        "description": "Nº de identificação do Album",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
                     }
                 ],
                 "responses": {
@@ -645,17 +737,17 @@
                 ]
             }
         },
-        "/api/musica/{mus_id}": {
+        "/api/musica/{id}": {
             "get": {
                 "tags": [
                     "Musicas"
                 ],
                 "summary": "Mostra uma Musica",
-                "description": "Pesquisa por uma musica através do (mus_id)",
-                "operationId": "65f4e789c3b27a581647d0747baad355",
+                "description": "Pesquisa por uma musica através do (id)",
+                "operationId": "3d29bf3286bb4583067ce33fef6dec84",
                 "parameters": [
                     {
-                        "name": "mus_id",
+                        "name": "id",
                         "in": "path",
                         "description": "Nº de identificação da musica",
                         "required": true,
@@ -687,19 +779,24 @@
                     "Musicas"
                 ],
                 "summary": "Atualizar dados de uma Musica",
-                "description": "Editar os dados de uma musica através do (mus_id)",
-                "operationId": "630d09f9d4e6cb123573694078f4a078",
+                "description": "Editar os dados de uma musica através do (id)",
+                "operationId": "cbdaacd8ff8269d53b14a1b2f2eaf47f",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "mus_id",
+                                    "id",
+                                    "album_id",
                                     "mus_titulo"
                                 ],
                                 "properties": {
-                                    "mus_id": {
+                                    "id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "album_id": {
                                         "type": "integer",
                                         "example": "1"
                                     },
@@ -737,11 +834,11 @@
                     "Musicas"
                 ],
                 "summary": "Exclui uma Musica",
-                "description": "Exclui uma musica através do (mus_id)",
-                "operationId": "9cc191355d78db8b48ee779129367239",
+                "description": "Exclui uma musica através do (id)",
+                "operationId": "44a9d28fbf09b7140de33b217854e947",
                 "parameters": [
                     {
-                        "name": "mus_id",
+                        "name": "id",
                         "in": "path",
                         "description": "ID do musica",
                         "required": true,

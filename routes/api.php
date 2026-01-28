@@ -30,23 +30,23 @@ Route::middleware('auth:sanctum')->group(function () {
     /* Rotas para os Artistas */
     Route::get('artista', [ArtistaController::class, 'index']);
     Route::post('artista', [ArtistaController::class, 'store']);
-    Route::get('artista/{art_id}', [ArtistaController::class, 'show']);
-    Route::put('artista/{art_id}', [ArtistaController::class, 'update']);
-    Route::delete('artista/{art_id}', [ArtistaController::class, 'destroy']);
+    Route::get('artista/{id}', [ArtistaController::class, 'show']);
+    Route::put('artista/{id}', [ArtistaController::class, 'update']);
+    Route::delete('artista/{id}', [ArtistaController::class, 'destroy']);
 
     /* Rotas para os Albuns */
     Route::get('album', [AlbumController::class, 'index']);
     Route::post('album', [AlbumController::class, 'store']);
-    Route::get('album/{alb_id}', [AlbumController::class, 'show']);
-    Route::put('album/{alb_id}', [AlbumController::class, 'update']);
-    Route::delete('album/{alb_id}', [AlbumController::class, 'destroy']);
+    Route::get('album/{id}', [AlbumController::class, 'show']);
+    Route::put('album/{id}', [AlbumController::class, 'update']);
+    Route::delete('album/{id}', [AlbumController::class, 'destroy']);
 
     /* Rotas para as Musicas */
     Route::get('musica', [MusicaController::class, 'index']);
     Route::post('musica', [MusicaController::class, 'store']);
-    Route::get('musica/{mus_id}', [MusicaController::class, 'show']);
-    Route::put('musica/{mus_id}', [MusicaController::class, 'update']);
-    Route::delete('musica/{mus_id}', [MusicaController::class, 'destroy']);
+    Route::get('musica/{id}', [MusicaController::class, 'show']);
+    Route::put('musica/{id}', [MusicaController::class, 'update']);
+    Route::delete('musica/{id}', [MusicaController::class, 'destroy']);
 
     /* Rotas para os Foto Albuns */
     //Route::get('foto-album', [FotoAlbumController::class, 'index']);    

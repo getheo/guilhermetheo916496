@@ -52,7 +52,7 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', true),
             'throw' => true,
             'report' => false,
             'options' => [
@@ -66,10 +66,11 @@ return [
             'driver' => 's3',
             'key' => env('MINIO_ACCESS_KEY'),
             'secret' => env('MINIO_SECRET_KEY'),
-            'region' => env('MINIO_DEFAULT_REGION'),
+            'region' => env('MINIO_DEFAULT_REGION', 'us-east-1'),
             'bucket' => env('MINIO_BUCKET_NAME'),
             'endpoint' => env('MINIO_ENDPOINT'),
-            'use_path_style_endpoint' => false, // important for MinIO
+            'use_path_style_endpoint' => true, 
+            
         ],
 
     ],
