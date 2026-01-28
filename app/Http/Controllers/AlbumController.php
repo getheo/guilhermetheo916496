@@ -126,34 +126,10 @@ class AlbumController extends Controller
         return response()->json(['message' => 'Album com esse nome já cadastrada.', 404]);
     }
 
-
-    /**
-    *  @OA\PUT(
-    *      path="/api/album/{alb_id}",
-    *      summary="Atualizar dados de um Album",
-    *      description="Editar os dados de um album através do (alb_id)",
-    *      tags={"Albuns"},
-    *     @OA\Parameter(
-     *         name="alb_id",
-     *         in="path",
-     *         required=true,
-     *         description="Nº de identificação do album",
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-    *      @OA\Response(
-    *          response=200,
-    *          description="Dados do Album atualizado com sucesso.",
-    *          @OA\MediaType(
-    *              mediaType="application/json",
-    *          )
-    *      ),
-    *      @OA\Response(
-    *          response=404,
-    *          description="Erro ao atualizar a Album"
-    *      ),
-    *      security={{"bearerAuth":{}}}
-    *  )
-    */   
+    public function edit(Album $album)
+    {
+        //
+    }     
     
     /**
      * @OA\PUT(
@@ -182,11 +158,6 @@ class AlbumController extends Controller
      *     security={{"bearerAuth":{}}}
      * )
      */
-    public function edit(Album $album)
-    {
-        //
-    }
-
 
     public function update(Request $request, Album $album)
     {

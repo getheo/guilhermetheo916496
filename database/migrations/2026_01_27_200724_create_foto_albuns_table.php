@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('foto_album', function (Blueprint $table) {            
-            $table->unsignedBigInteger('album_id')->foreign()->references('id')->on('album')->onDelete('cascade');
+        Schema::create('foto_album', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('album_id')
+                ->constrained('album')
+                ->cascadeOnDelete();
+                
             $table->dateTime('fa_data');
             $table->string('fa_bucket', 255);            
             $table->string('fa_hash', 255)->unique();

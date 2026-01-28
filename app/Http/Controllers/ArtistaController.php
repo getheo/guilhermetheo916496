@@ -125,35 +125,13 @@ class ArtistaController extends Controller
 
         return response()->json(['message' => 'Artista com esse nome já cadastrada.', 404]);
     }
+    
 
-
-    /**
-    *  @OA\PUT(
-    *      path="/api/artista/{art_id}",
-    *      summary="Atualizar dados de um Artista",
-    *      description="Editar os dados de um artista através do (art_id)",
-    *      tags={"Artistas"},
-    *     @OA\Parameter(
-     *         name="art_id",
-     *         in="path",
-     *         required=true,
-     *         description="Nº de identificação do artista",
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-    *      @OA\Response(
-    *          response=200,
-    *          description="Dados do Artista atualizado com sucesso.",
-    *          @OA\MediaType(
-    *              mediaType="application/json",
-    *          )
-    *      ),
-    *      @OA\Response(
-    *          response=404,
-    *          description="Erro ao atualizar a Artista"
-    *      ),
-    *      security={{"bearerAuth":{}}}
-    *  )
-    */   
+    public function edit(Artista $artista)
+    {
+        //
+    }
+    
     
     /**
      * @OA\PUT(
@@ -174,13 +152,8 @@ class ArtistaController extends Controller
      *         description="Artista atualizado com sucesso",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Endereço atualizado com sucesso"),
-     *             @OA\Property(property="pessoa", type="object",
-     *             @OA\Property(property="pes_id", type="integer", example="1"),
-     *             @OA\Property(property="pes_nome", type="string", example="Nome Pessoa"),
-     *             @OA\Property(property="pes_data_nascimento", type="string", example="2020-01-01"),
-     *             @OA\Property(property="pes_sexo", type="string", example="M"),
-     *             @OA\Property(property="pes_mae", type="string", example="Mae Pessoa"),
-     *             @OA\Property(property="pes_pai", type="string", example="Pai Pessoa")
+     *             @OA\Property(property="artista", type="object",
+     *             @OA\Property(property="art_nome", type="string", example="Nome Artista")
      *             )
      *         )
      *     ),
@@ -189,11 +162,6 @@ class ArtistaController extends Controller
      *     security={{"bearerAuth":{}}}
      * )
      */
-    public function edit(Artista $artista)
-    {
-        //
-    }
-
 
     public function update(Request $request, Artista $artista)
     {

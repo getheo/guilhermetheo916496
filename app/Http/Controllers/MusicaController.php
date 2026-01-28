@@ -126,34 +126,10 @@ class MusicaController extends Controller
         return response()->json(['message' => 'Musica com esse titulo já cadastrada.', 404]);
     }
 
-
-    /**
-    *  @OA\PUT(
-    *      path="/api/musica/{mus_id}",
-    *      summary="Atualizar dados de uma Musica",
-    *      description="Editar os dados de uma musica através do (mus_id)",
-    *      tags={"Musicas"},
-    *     @OA\Parameter(
-     *         name="mus_id",
-     *         in="path",
-     *         required=true,
-     *         description="Nº de identificação da musica",
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-    *      @OA\Response(
-    *          response=200,
-    *          description="Dados da Musica atualizado com sucesso.",
-    *          @OA\MediaType(
-    *              mediaType="application/json",
-    *          )
-    *      ),
-    *      @OA\Response(
-    *          response=404,
-    *          description="Erro ao atualizar a Musica"
-    *      ),
-    *      security={{"bearerAuth":{}}}
-    *  )
-    */   
+    public function edit(Musica $musica)
+    {
+        //
+    }
     
     /**
      * @OA\PUT(
@@ -182,11 +158,6 @@ class MusicaController extends Controller
      *     security={{"bearerAuth":{}}}
      * )
      */
-    public function edit(Musica $musica)
-    {
-        //
-    }
-
 
     public function update(Request $request, Musica $musica)
     {
@@ -222,7 +193,10 @@ class MusicaController extends Controller
     *      ),
     *      @OA\Response(
     *          response=404,
-    *          description="Não foi possível excluir a musica"
+    *          description="Não foi possível excluir a musica",
+    *          @OA\MediaType(
+    *              mediaType="application/json",
+    *          )    
     *      ),
     *      security={{"bearerAuth":{}}}
     *  )

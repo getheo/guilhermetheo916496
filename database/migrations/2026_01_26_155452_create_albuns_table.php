@@ -12,16 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('album', function (Blueprint $table) {
-            $table->id();            
-            $table->unsignedBigInteger('artista_id')->foreign()->references('id')->on('artista')->onDelete('cascade');            
+            $table->id();
+
+            $table->foreignId('artista_id')
+                ->constrained('artista')
+                ->cascadeOnDelete();
+
             $table->string('alb_titulo');
-            $table->date('alb_data_lancamento')->nullable();            
+            $table->date('alb_data_lancamento')->nullable();
             $table->boolean('alb_status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });
     }
-
     /**
      * Reverse the migrations.
      */

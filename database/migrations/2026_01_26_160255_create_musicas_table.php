@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('musica', function (Blueprint $table) {
-            $table->id();            
-            $table->unsignedBigInteger('album_id')->foreign()->references('id')->on('album')->onDelete('cascade');
+            $table->id();
+
+            $table->foreignId('album_id')
+                ->constrained('album')
+                ->cascadeOnDelete();
+                
             $table->string('mus_titulo');
             $table->string('mus_arquivo')->nullable();      
             $table->boolean('mus_status')->default(true);
