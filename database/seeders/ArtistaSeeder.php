@@ -72,6 +72,8 @@ class ArtistaSeeder extends Seeder
                 'art_nome' => 'Banda Novo Som',                
             ]);
         }
+
+        Artista::factory()->count(10)->create();
         
     }
 }

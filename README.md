@@ -27,7 +27,7 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 
 
 ### Faça o Clone do Projeto
-#### O projeto encontra-se no GIT na branch master, execute o comando para baixar:
+#### O projeto encontra-se no GIT na branch main, execute o comando para baixar:
 ```bash
 git clone https://github.com/getheo/guilhermetheo916496.git
 ```

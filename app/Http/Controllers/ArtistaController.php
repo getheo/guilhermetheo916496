@@ -192,29 +192,38 @@ class ArtistaController extends Controller
     *      description="Exclui um artista através do (id)",
     *      tags={"Artistas"},
     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID do artista",
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+    *          name="id",
+    *          in="path",
+    *          required=true,
+    *          description="ID do artista",
+    *          @OA\Schema(type="integer", example=1)
+    *      ),
     *      @OA\Response(
     *          response=200,
-    *          description="Artista excluído com sucesso",
+    *          description="artista excluído com sucesso",
     *          @OA\MediaType(
     *              mediaType="application/json",
     *          )
     *      ),
     *      @OA\Response(
     *          response=404,
-    *          description="Não foi possível excluir a pessoa"
+    *          description="Não foi possível excluir o album",
+    *          @OA\MediaType(
+    *              mediaType="application/json",
+    *          )    
     *      ),
     *      security={{"bearerAuth":{}}}
     *  )
     */
-    public function destroy(Artista $artista)
+    public function destroy($id)
     {
-        $artista->delete();
-        return response()->json(null, 204);
+        $artista = Artista::where('id', $id)->first();  
+        
+        if (!$artista) {
+            return response()->json(['message' => 'Artista não encontrado.'], 404);
+        }
+
+        $artista->delete();        
+        return response()->json(['message' => 'Artista excluído com sucesso'], 200);
     }
 }

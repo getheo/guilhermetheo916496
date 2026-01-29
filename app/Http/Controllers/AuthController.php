@@ -2,44 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     /**
-    * @OA\Post(
-    *     path="/api/login",
-    *     summary="Autenticar usuário",
-    *     tags={"Autenticação"},
-    *     @OA\Parameter(
-    *         name="email",
-    *         in="query",
-    *         description="Informe o email",
-    *         required=true,
-    *         example="teste@seplag.mt.gov.br",
-    *         @OA\MediaType(
-    *            mediaType="application/json",
-    *         ),
-    *         @OA\Schema(type="string")
-    *     ),
-    *     @OA\Parameter(
-    *         name="password",
-    *         in="query",
-    *         description="Insira a senha",
-    *         required=true,
-    *         example="seplag2026",
-    *         @OA\MediaType(
-    *            mediaType="application/json",
-    *         ),
-    *         @OA\Schema(type="string")
-    *     ),
-    *     @OA\Response(response="200", description="Successo no Login"),
-    *     @OA\Response(response="401", description="Credenciais inválidas")
-    * )
-    */
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="Autenticar usuário",
+     *     tags={"Autenticação"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(
+     *                 property="email",
+     *                 type="string",
+     *                 format="email",
+     *                 example="teste@seplag.mt.gov.br"
+     *             ),
+     *             @OA\Property(
+     *                 property="password",
+     *                 type="string",
+     *                 example="seplag2026"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login realizado com sucesso",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="token",
+     *                 type="string",
+     *                 example="1|eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Credenciais inválidas"
+     *     )
+     *)
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -53,55 +62,78 @@ class AuthController extends Controller
             return response()->json(['error' => 'Credenciais inválidas'], 401);
         }
 
-        // Cria token válido por 5 minutos
-        $token = $user->createToken('auth-token', ['*'], now()->addMinutes(5))->plainTextToken;
+        // Limpa tokens anteriores (opcional, para manter apenas um acesso por vez)
+        $user->tokens()->delete();
+
+        $token = $user->createToken(
+            'auth-token',
+            ['*'],
+            now()->addMinutes(5)
+        )->plainTextToken;
 
         return response()->json(['token' => $token]);
     }
+
+    /**
+     * @OA\Post(
+     * path="/api/logout",
+     * summary="Encerrar sessão",
+     * tags={"Autenticação"},
+     * security={{"bearerAuth":{}}},
+     * @OA\Response(response=200, description="Logout realizado"),
+     * @OA\Response(response=401, description="Não autenticado")
+     * )
+     */
     
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Logout realizado com sucesso']);
+        $user = $request->user();
+
+        if ($user) {
+            $user->tokens()->delete();
+            return response()->json(['message' => 'Logout realizado com sucesso']);
+        }
+
+        return response()->json(['error' => 'Usuário não autenticado'], 401);
     }
 
     /**
-    * @OA\Post(
-    *     path="/api/refresh",
-    *     summary="Renovar Token",
-    *     tags={"Autenticação"},
-    *     @OA\Parameter(
-    *         name="email",
-    *         in="query",
-    *         description="Informe um email",
-    *         required=true,
-    *         example="teste@seplag.mt.gov.br",
-    *         @OA\MediaType(
-    *            mediaType="application/json",
-    *         ),
-    *         @OA\Schema(type="string")
-    *     ),
-    *     @OA\Parameter(
-    *         name="password",
-    *         in="query",
-    *         description="Insira a senha",
-    *         required=true,
-    *         example="seplag2026",
-    *         @OA\MediaType(
-    *            mediaType="application/json",
-    *         ),
-    *         @OA\Schema(type="string")
-    *     ),
-    *     @OA\Response(response="200", description="Successo no Refresh"),
-    *     @OA\Response(response="401", description="Credenciais inválidas")
-    * )
-    */
+     * @OA\Post(
+     *     path="/api/refresh",
+     *     summary="Renovar token de autenticação",
+     *     tags={"Autenticação"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token renovado com sucesso",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="token_new", type="string", example="1|eyJ0eXAiOiJKV1QiLCJhbGci...")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Token inválido ou expirado"
+     *     )
+     * )
+     */
     public function refresh(Request $request)
-    {        
+    {
         $user = $request->user();
-        //$request->user()->tokens()->delete(); // Revoga tokens antigos
+
+        // Se o token atual for inválido, o $user será null
+        if (!$user) {
+            return response()->json(['error' => 'Token inválido ou usuário não encontrado'], 401);
+        }
+
         $user->tokens()->delete();
-        $newToken = $user->createToken('auth-token', ['*'], now()->addMinutes(5))->plainTextToken;
-        return response()->json(['token_new' => $newToken]);        
+
+        $newToken = $user->createToken(
+            'auth-token',
+            ['*'],
+            now()->addMinutes(5)
+        )->plainTextToken;
+
+        return response()->json(['token_new' => $newToken]);
     }
 }

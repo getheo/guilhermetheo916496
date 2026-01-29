@@ -18,7 +18,7 @@ class Album extends Model
     
 
     // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['alb_nome', 'alb_descricao', 'alb_data_lancamento', 'artista_id'];
+    protected $fillable = ['artista_id', 'alb_titulo', 'alb_data_lancamento', 'alb_status'];
 
     public function artista()
     {

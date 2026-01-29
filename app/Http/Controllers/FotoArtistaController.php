@@ -21,7 +21,7 @@ class FotoArtistaController extends Controller
      *     summary="Faz o upload de uma foto de artista",
      *     tags={"Foto Upload"},
      *     @OA\Parameter(
-     *         name="art_id",
+     *         name="artista_id",
      *         in="query",
      *         description="Nº de identificação do Artista",
      *         required=true,
@@ -45,6 +45,7 @@ class FotoArtistaController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean"),
      *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="artista_id", type="integer"),
      *             @OA\Property(property="file", type="string")
      *         )
      *     ),
@@ -56,10 +57,10 @@ class FotoArtistaController extends Controller
     
     public function upload(Request $request)
     {
-        $artista = Artista::where('id', $request->art_id)->first();
+        $artista = Artista::where('id', $request->artista_id)->first();
 
         $request->validate([
-            'art_id' => 'required|integer',
+            'artista_id' => 'required|integer|exists:artista,id',
             'file' => 'required|image|mimes:jpg,jpeg|max:10240',
         ]);
 
@@ -67,7 +68,7 @@ class FotoArtistaController extends Controller
             return response()->json(['message' => 'Artista não encontrado', 404]);
         }        
         
-        $path = $request->file('file')->store('artista/'.$request->art_id, 's3');
+        $path = $request->file('file')->store('artista/'.$request->artista_id, 's3');
         //$path = Storage::disk('s3')->put('uploads/{$request->art_id}', $request->file('file'));
         
         $foto = FotoArtista::create([
@@ -82,6 +83,6 @@ class FotoArtistaController extends Controller
             'foto_url' => $path,
         ]);
 
-        return response()->json(['message' => 'Foto cadastrada com sucesso.', 'foto-album' => $foto, 200]);
+        return response()->json(['message' => 'Foto Artista cadastrada com sucesso.', 'foto-artista' => $foto, 200]);
     }    
 }

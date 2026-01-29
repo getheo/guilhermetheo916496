@@ -4,25 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class FotoAlbum extends Model
 {
     use HasFactory;
 
-    // Nome da tabela associada à model (opcional)
+    // Nome da tabela (singular conforme seu padrão)
     protected $table = 'foto_album';
 
-    // Ajustar o primary key
-    //protected $primaryKey = 'fa_id';
-    //public $incrementing = true;
-    
+    // Desative os timestamps se o banco de dados não tiver created_at/updated_at
+    // public $timestamps = false;
 
-    // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['album_id', 'fa_data', 'fa_bucket', 'fa_hash'];
+    // Colunas que podem ser preenchidas em massa
+    protected $fillable = [
+        'album_id', 
+        'fa_data', 
+        'fa_bucket', 
+        'fa_hash'
+    ];
 
-    public function album(): HasOne
+    /**
+     * Relacionamento: Esta foto PERTENCE a um álbum.
+     * * Usamos BelongsTo porque a chave estrangeira (album_id) está nesta tabela.
+     */
+    public function album(): BelongsTo
     {
-        return $this->HasOne(Album::class, 'album_id');
+        return $this->belongsTo(Album::class, 'album_id');
     }
 }

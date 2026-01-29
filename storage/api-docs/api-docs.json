@@ -151,15 +151,36 @@
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Albumn atualizado com sucesso"
+                                            "example": "Album atualizado com sucesso"
+                                        },
+                                        "album": {
+                                            "properties": {
+                                                "artista_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                },
+                                                "alb_titulo": {
+                                                    "type": "string",
+                                                    "example": "Nome Album"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Endereco não encontrado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -182,53 +203,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Album excluído com sucesso",
+                        "description": "album excluído com sucesso",
                         "content": {
                             "application/json": {}
                         }
                     },
                     "404": {
-                        "description": "Não foi possível excluir o album"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/artistaalbum": {
-            "post": {
-                "tags": [
-                    "Artistas Albuns"
-                ],
-                "summary": "Cadastra vinculo de Artista com album",
-                "description": "Registra o album de um artista",
-                "operationId": "a23623e6b037ed5e790505568ed30b73",
-                "parameters": [
-                    {
-                        "name": "art_id",
-                        "in": "query",
-                        "description": "Nº identificação do artista",
-                        "required": true
-                    },
-                    {
-                        "name": "alb_id",
-                        "in": "query",
-                        "description": "Nº identificação do Album",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                        "description": "Não foi possível excluir o album",
                         "content": {
                             "application/json": {}
                         }
-                    },
-                    "404": {
-                        "description": "Erro"
                     }
                 },
                 "security": [
@@ -440,13 +424,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Artista excluído com sucesso",
+                        "description": "artista excluído com sucesso",
                         "content": {
                             "application/json": {}
                         }
                     },
                     "404": {
-                        "description": "Não foi possível excluir a pessoa"
+                        "description": "Não foi possível excluir o album",
+                        "content": {
+                            "application/json": {}
+                        }
                     }
                 },
                 "security": [
@@ -463,31 +450,47 @@
                 ],
                 "summary": "Autenticar usuário",
                 "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "Informe o email",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "teste@seplag.mt.gov.br"
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "Insira a senha",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "seplag2026"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "teste@seplag.mt.gov.br"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "seplag2026"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Successo no Login"
+                        "description": "Login realizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Credenciais inválidas"
@@ -495,43 +498,61 @@
                 }
             }
         },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Encerrar sessão",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Logout realizado"
+                    },
+                    "401": {
+                        "description": "Não autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/refresh": {
             "post": {
                 "tags": [
                     "Autenticação"
                 ],
-                "summary": "Renovar Token",
+                "summary": "Renovar token de autenticação",
                 "operationId": "2c27d311a2876560fcb5a754b556cdc5",
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "query",
-                        "description": "Informe um email",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "teste@seplag.mt.gov.br"
-                    },
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "description": "Insira a senha",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "example": "seplag2026"
-                    }
-                ],
                 "responses": {
                     "200": {
-                        "description": "Successo no Refresh"
+                        "description": "Token renovado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token_new": {
+                                            "type": "string",
+                                            "example": "1|eyJ0eXAiOiJKV1QiLCJhbGci..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
-                        "description": "Credenciais inválidas"
+                        "description": "Token inválido ou expirado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/foto-album": {
@@ -544,7 +565,7 @@
                 "operationId": "665617137aa8a9d1c360a2ea91d98dc9",
                 "parameters": [
                     {
-                        "name": "alb_id",
+                        "name": "album_id",
                         "in": "query",
                         "description": "Nº de identificação do Album",
                         "required": true
@@ -609,7 +630,7 @@
                 "operationId": "b2259c653746dd8c6a2c15719ea88d8e",
                 "parameters": [
                     {
-                        "name": "art_id",
+                        "name": "artista_id",
                         "in": "query",
                         "description": "Nº de identificação do Artista",
                         "required": true
@@ -643,6 +664,9 @@
                                         },
                                         "message": {
                                             "type": "string"
+                                        },
+                                        "artista_id": {
+                                            "type": "integer"
                                         },
                                         "file": {
                                             "type": "string"
@@ -710,7 +734,7 @@
                     },
                     {
                         "name": "album_id",
-                        "in": "path",
+                        "in": "query",
                         "description": "Nº de identificação do Album",
                         "required": true,
                         "schema": {
@@ -812,7 +836,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Musica atualizado com sucesso",
+                        "description": "musica atualizado com sucesso",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -820,14 +844,42 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Musica atualizado com sucesso"
+                                        },
+                                        "musica": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": "Id da Musica"
+                                                },
+                                                "mus_titulo": {
+                                                    "type": "string",
+                                                    "example": "Nome Musica"
+                                                },
+                                                "album_id": {
+                                                    "type": "integer",
+                                                    "example": "1"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Requisição inválida"
+                    },
+                    "404": {
+                        "description": "Musica não encontrado"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -850,7 +902,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "musica excluído com sucesso",
+                        "description": "musica excluída com sucesso",
                         "content": {
                             "application/json": {}
                         }
@@ -902,14 +954,6 @@
         }
     },
     "components": {
-        "responses": {
-            "400": {
-                "description": "Endereco não encontrado"
-            },
-            "404": {
-                "description": "Musica não encontrado"
-            }
-        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
@@ -922,10 +966,6 @@
         {
             "name": "Albuns",
             "description": "Albuns"
-        },
-        {
-            "name": "Artistas Albuns",
-            "description": "Artistas Albuns"
         },
         {
             "name": "Artistas",

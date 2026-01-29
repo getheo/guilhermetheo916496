@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
 use App\Models\Musica;
 use App\Models\ArtistaAlbum;
 use Illuminate\Http\Request;
@@ -94,7 +95,7 @@ class MusicaController extends Controller
     *      ),
     *     @OA\Parameter(
     *         name="album_id",
-    *         in="path",
+    *         in="query",
     *         required=true,
     *         description="Nº de identificação do Album",
     *         @OA\Schema(type="integer", example=1)
@@ -115,29 +116,37 @@ class MusicaController extends Controller
     */
     public function store(Request $request)
     {
-        $musica = Musica::where('mus_titulo', $request->mus_titulo)->first();  
+        $musica = Musica::where('mus_titulo', $request->mus_titulo)->first();        
 
         if (!$musica) {             
 
             $validadeData = $request->validate([            
                 'mus_titulo' => 'required|string',
+                'album_id' => 'required|integer|exists:album,id',
             ]);
+
+            $album = Album::where('id', $validadeData['album_id'])->first();
+
+            if (!$album) {
+                return response()->json(['message' => 'Album não encontrado.'], 404);
+            }
 
             $musica = Musica::create([            
                 'mus_titulo' => $validadeData['mus_titulo'],
+                'album_id' => $validadeData['album_id'],
             ]);
             
             return response()->json(['message' => 'Musica cadastrada com sucesso.','musica' => $musica], 200);
         }
 
-        return response()->json(['message' => 'Musica com esse titulo já cadastrada.', 404]);
+        return response()->json(['message' => 'Musica com esse titulo já cadastrada.'], 404);
     }
 
     public function edit(Musica $musica)
     {
         //
     }
-    
+
     /**
      * @OA\PUT(
      *     path="/api/musica/{id}",
@@ -155,12 +164,17 @@ class MusicaController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Musica atualizado com sucesso",
+     *         description="musica atualizado com sucesso",
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Musica atualizado com sucesso"),
+     *             @OA\Property(property="musica", type="object",
+     *             @OA\Property(property="id", type="integer", example="Id da Musica"),
+     *             @OA\Property(property="mus_titulo", type="string", example="Nome Musica"),
+     *             @OA\Property(property="album_id", type="integer", example="1")
      *             )
      *         )
      *     ),
+     *     @OA\Response(response=400, description="Requisição inválida"),
      *     @OA\Response(response=404, description="Musica não encontrado"),
      *     security={{"bearerAuth":{}}}
      * )
@@ -194,7 +208,7 @@ class MusicaController extends Controller
      *     ),
     *      @OA\Response(
     *          response=200,
-    *          description="musica excluído com sucesso",
+    *          description="musica excluída com sucesso",
     *          @OA\MediaType(
     *              mediaType="application/json",
     *          )
@@ -209,9 +223,15 @@ class MusicaController extends Controller
     *      security={{"bearerAuth":{}}}
     *  )
     */
-    public function destroy(Musica $musica)
+    public function destroy($id)
     {
-        $musica->delete();
-        return response()->json(null, 204);
+        $musica = Musica::where('id', $id)->first();  
+        
+        if (!$musica) {
+            return response()->json(['message' => 'Musica não encontrada.'], 404);
+        }
+
+        $musica->delete();        
+        return response()->json(['message' => 'Música excluída com sucesso'], 200);
     }
 }

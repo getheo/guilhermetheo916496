@@ -118,14 +118,14 @@ class AlbumController extends Controller
 
         if (!$album) {             
 
-            $validadeData = $request->validate([            
+            $validadeData = $request->validate([                
+                'artista_id' => 'required|integer|exists:artista,id',
                 'alb_titulo' => 'required|string',
-                'artista_id' => 'required|integer',
             ]);
 
             $album = Album::create([            
-                'alb_titulo' => $validadeData['alb_titulo'],
                 'artista_id' => $validadeData['artista_id'],
+                'alb_titulo' => $validadeData['alb_titulo'],
             ]);
             
             return response()->json(['message' => 'Album cadastrado e vinculado ao artista com sucesso.','album' => $album], 200);
@@ -157,7 +157,10 @@ class AlbumController extends Controller
      *         response=200,
      *         description="Album atualizado com sucesso",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Albumn atualizado com sucesso")     
+     *             @OA\Property(property="message", type="string", example="Album atualizado com sucesso"),
+     *             @OA\Property(property="album", type="object",
+     *             @OA\Property(property="artista_id", type="integer", example="1"),
+     *             @OA\Property(property="alb_titulo", type="string", example="Nome Album"),
      *             )
      *         )
      *     ),
@@ -176,7 +179,7 @@ class AlbumController extends Controller
         $album->update($validadeData);
 
         return response()->json($album, 200);
-    }
+    }    
 
     /**
     *  @OA\DELETE(
@@ -185,29 +188,38 @@ class AlbumController extends Controller
     *      description="Exclui um album através do (id)",
     *      tags={"Albuns"},
     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID do album",
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
+    *          name="id",
+    *          in="path",
+    *          required=true,
+    *          description="ID do album",
+    *          @OA\Schema(type="integer", example=1)
+    *      ),
     *      @OA\Response(
     *          response=200,
-    *          description="Album excluído com sucesso",
+    *          description="album excluído com sucesso",
     *          @OA\MediaType(
     *              mediaType="application/json",
     *          )
     *      ),
     *      @OA\Response(
     *          response=404,
-    *          description="Não foi possível excluir o album"
+    *          description="Não foi possível excluir o album",
+    *          @OA\MediaType(
+    *              mediaType="application/json",
+    *          )    
     *      ),
     *      security={{"bearerAuth":{}}}
     *  )
     */
-    public function destroy(Album $album)
+    public function destroy($id)
     {
-        $album->delete();
-        return response()->json(null, 204);
+        $album = Album::where('id', $id)->first();  
+        
+        if (!$album) {
+            return response()->json(['message' => 'Album não encontrado.'], 404);
+        }
+
+        $album->delete();        
+        return response()->json(['message' => 'Album excluído com sucesso'], 200);
     }
 }

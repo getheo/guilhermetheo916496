@@ -21,7 +21,7 @@ class FotoAlbumController extends Controller
      *     summary="Faz o upload de uma foto de album",
      *     tags={"Foto Upload"},
      *     @OA\Parameter(
-     *         name="alb_id",
+     *         name="album_id",
      *         in="query",
      *         description="Nº de identificação do Album",
      *         required=true,
@@ -56,10 +56,10 @@ class FotoAlbumController extends Controller
     
     public function upload(Request $request)
     {
-        $album = Album::where('id', $request->alb_id)->first();
+        $album = Album::where('id', $request->album_id)->first();
 
         $request->validate([
-            'alb_id' => 'required|integer',
+            'album_id' => 'required|integer|exists:album,id',
             'file' => 'required|image|mimes:jpg,jpeg|max:10240',
         ]);
 
@@ -67,11 +67,11 @@ class FotoAlbumController extends Controller
             return response()->json(['message' => 'Album não encontrado', 404]);
         }        
         
-        $path = $request->file('file')->store('album/'.$request->alb_id, 's3');
+        $path = $request->file('file')->store('album/'.$request->album_id, 's3');
         //$path = Storage::disk('s3')->put('uploads/{$request->art_id}', $request->file('file'));
         
         $foto = FotoAlbum::create([
-            'album_id' => $album->art_id,
+            'album_id' => $album->id,
             'fa_data' => Carbon::now(),
             'fa_bucket' => env('AWS_BUCKET'),
             'fa_hash' => $path,

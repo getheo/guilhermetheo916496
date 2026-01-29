@@ -99,5 +99,7 @@ class AlbumSeeder extends Seeder
             ]);
         }
 
+        Album::factory()->count(10)->create();
+
     }
 }

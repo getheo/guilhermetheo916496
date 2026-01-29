@@ -18,7 +18,7 @@ class Musica extends Model
     
 
     // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['mus_nome', 'mus_duracao', 'mus_genero', 'album_id'];
+    protected $fillable = ['album_id', 'mus_titulo', 'mus_arquivo', 'mus_status'];
 
     public function album()
     {

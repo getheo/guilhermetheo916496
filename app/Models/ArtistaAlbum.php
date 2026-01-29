@@ -5,30 +5,38 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ArtistaAlbum extends Model
 {
     use HasFactory;
 
-    // Nome da tabela associada à model (opcional)
+    // Nome da tabela conforme sua migração
     protected $table = 'artista_album';
 
-    // Ajustar primary key
-    //protected $primaryKey = 'art_alb_id';
-    //public $incrementing = true;
+    /**
+     * Colunas que podem ser preenchidas em massa.
+     * Certifique-se de que esses nomes sejam exatamente iguais aos do seu banco.
+     */
+    protected $fillable = [
+        'art_id', 
+        'alb_id'
+    ];
 
-
-    // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['artista_id', 'album_id'];
-
+    /**
+     * Relacionamento: O vínculo pertence a um Artista
+     */
     public function artista(): BelongsTo
     {
-        return $this->belongsTo(Artista::class, 'artista_id');
+        // 'art_id' é a chave estrangeira nesta tabela
+        return $this->belongsTo(Artista::class, 'art_id');
     }
 
-    public function album()
+    /**
+     * Relacionamento: O vínculo pertence a um Álbum
+     */
+    public function album(): BelongsTo
     {
-        return $this->belongsTo(Album::class, 'album_id');
+        // 'alb_id' é a chave estrangeira nesta tabela
+        return $this->belongsTo(Album::class, 'alb_id');
     }
 }

@@ -32,7 +32,9 @@ class MusicaSeeder extends Seeder
                 'album_id' => 2,
                 'mus_titulo' => 'Nossa musica',
             ]);
-        }       
+        }    
+        
+        Musica::factory()->count(10)->create();
         
     }
 }

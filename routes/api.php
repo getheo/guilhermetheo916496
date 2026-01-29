@@ -20,12 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/refresh', [AuthController::class, 'refresh']);
 
 Route::middleware('auth:sanctum')->group(function () {
     //Route::apiResource('albums', PessoaController::class);
 
     Route::post('/logout', [AuthController::class, 'logout']);    
+    Route::post('/refresh', [AuthController::class, 'refresh']);
 
     /* Rotas para os Artistas */
     Route::get('artista', [ArtistaController::class, 'index']);
