@@ -24,4 +24,9 @@ class Artista extends Model
     {
         return $this->hasMany(Album::class);
     }
+
+    public function foto()
+    {
+        return $this->hasMany(FotoArtista::class);
+    }
 }

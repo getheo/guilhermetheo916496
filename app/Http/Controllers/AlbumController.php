@@ -66,7 +66,7 @@ class AlbumController extends Controller
     */
     public function show(string $id)
     {
-        $album = Album::where('id', $id)->with(['artista'])->first();        
+        $album = Album::where('id', $id)->with(['artista', 'foto'])->first();        
 
         if (!$album) {
             //return response('Não encontrado', 404)->json();

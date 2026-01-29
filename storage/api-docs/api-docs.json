@@ -805,21 +805,28 @@
                 "summary": "Atualizar dados de uma Musica",
                 "description": "Editar os dados de uma musica através do (id)",
                 "operationId": "cbdaacd8ff8269d53b14a1b2f2eaf47f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da música a ser atualizada",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 5
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "id",
                                     "album_id",
                                     "mus_titulo"
                                 ],
                                 "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
                                     "album_id": {
                                         "type": "integer",
                                         "example": "1"
@@ -847,10 +854,6 @@
                                         },
                                         "musica": {
                                             "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": "Id da Musica"
-                                                },
                                                 "mus_titulo": {
                                                     "type": "string",
                                                     "example": "Nome Musica"

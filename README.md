@@ -201,11 +201,63 @@ Abaixo estão os principais endpoints da API.
 
 ### 🔄 Exemplo de Requisição
 
-##### Cadastrar um artista (POST `/api/artista`)
+##### Mostra um artista específico (GET `/api/artista/{id}`)
 
 ```json
 {
-  "art_nome": "Nome unidade"  
+  "message": "Artista encontrado",
+  "artista": {
+    "id": 3,
+    "art_nome": "Michel Teló",
+    "art_descricao": null,
+    "art_status": true,
+    "created_at": "2026-01-29T21:17:48.000000Z",
+    "updated_at": "2026-01-29T21:17:48.000000Z",
+    "deleted_at": null,
+    "albuns": [
+      {
+        "id": 8,
+        "artista_id": 3,
+        "alb_titulo": "Bem Sertanejo",
+        "alb_data_lancamento": null,
+        "alb_status": true,
+        "created_at": "2026-01-29T21:17:48.000000Z",
+        "updated_at": "2026-01-29T21:17:48.000000Z",
+        "deleted_at": null
+      },
+      {
+        "id": 9,
+        "artista_id": 3,
+        "alb_titulo": "Bem Sertanejo - O Show (Ao Vivo)",
+        "alb_data_lancamento": null,
+        "alb_status": true,
+        "created_at": "2026-01-29T21:17:48.000000Z",
+        "updated_at": "2026-01-29T21:17:48.000000Z",
+        "deleted_at": null
+      },
+      {
+        "id": 10,
+        "artista_id": 3,
+        "alb_titulo": "Bem Sertanejo - (1ª Temporada) - EP",
+        "alb_data_lancamento": null,
+        "alb_status": true,
+        "created_at": "2026-01-29T21:17:48.000000Z",
+        "updated_at": "2026-01-29T21:17:48.000000Z",
+        "deleted_at": null
+      }
+    ],
+    "foto": [
+      {
+        "id": 1,
+        "artista_id": 3,
+        "fa_data": "2026-01-29 21:20:47",
+        "fa_bucket": "mybucket",
+        "fa_hash": "artista/3/wIrSh8rZr8vB7d136zS689TW3HLQ2z5bGwh03TLs.jpg",
+        "created_at": "2026-01-29T21:20:47.000000Z",
+        "updated_at": "2026-01-29T21:20:47.000000Z"
+      }
+    ]
+  }
 }
 ```
 
@@ -229,8 +281,63 @@ Abaixo estão os principais endpoints da API.
 
 ```json
 {
-  "alb_titulo": "Nome de um album",
-  "artista_id": 2
+  "alb_titulo": "Novo album para o artista (15)",
+  "artista_id": 15
+}
+```
+
+##### Resposta do cadastro
+```json
+{
+  "message": "Album cadastrado e vinculado ao artista com sucesso.",
+  "album": {
+    "artista_id": "15",
+    "alb_titulo": "Novo album para o artista (15)",
+    "updated_at": "2026-01-29T21:35:04.000000Z",
+    "created_at": "2026-01-29T21:35:04.000000Z",
+    "id": 34
+  }
+}
+```
+
+---
+
+- Musica
+
+
+| Método  | Endpoint           | Descrição                      |                 Parâmetros / Corpo                          |
+|---------|--------------------|--------------------------------|-------------------------------------------------------------|
+| `GET`   | `/api/musica`      | Retorna todos as Músicas       | (paginado)                                                  |
+| `GET`   | `/api/musica/{id}` | Retorna uma música específica  | `id`                                                        |
+| `POST`  | `/api/musica`      | Cadastra uma música            | `{ "album_id": "10", "mus_titulo": "Minha música nova" }`   |
+| `PUT`   | `/api/musica/{id}` | Atualiza uma  música           | `{ "album_id": 10, "mus_titulo": "Novo titulo da música" }` |
+| `DELETE`| `/api/musica/{id}` | Exclui uma música              | `id`                                                        |
+
+
+### 🔄 Exemplo de Requisição
+
+##### Mostra todas as músicas (GET `/api/album`)
+
+```json
+{
+  "id": 11,
+  "album_id": 11,
+  "mus_titulo": "Amet sed iusto nam eum architecto enim. Deserunt id sint ut voluptatibus dolorem. Qui facilis et expedita vero nihil animi.",
+  "mus_arquivo": "Quae dolor et dolor sunt nobis nesciunt. Culpa eius excepturi sequi doloremque dolorum et. Et cum rerum rerum vel fugiat.",
+  "mus_status": false,
+  "created_at": "2026-01-29T21:17:48.000000Z",
+  "updated_at": "2026-01-29T21:17:48.000000Z",
+  "deleted_at": null,
+  "album": {
+    "id": 11,
+    "artista_id": 4,
+    "alb_titulo": "Use Your Illusion I",
+    "alb_data_lancamento": null,
+    "alb_status": true,
+    "created_at": "2026-01-29T21:17:48.000000Z",
+    "updated_at": "2026-01-29T21:17:48.000000Z",
+    "deleted_at": null
+  }
 }
 ```
 
@@ -273,6 +380,31 @@ Abaixo estão os principais endpoints da API.
 {
   "album_id": "1",
   "file": "foto-album.jpg"
+}
+```
+
+---
+
+- Regionais (API externa)
+
+
+| Método  | Endpoint         | Descrição                 |                    parâmetros / Corpo                      |
+|---------|------------------|---------------------------|------------------------------------------------------------|
+| `GET`   | `/api/regional`  | Mostra Unidade Regionais  | `{ "id": "1", "nome": "Nome da Regional", "ativo": true }` |
+
+
+### 🔄 Exemplo de Requisição
+
+##### Mostrar todas as Regionais (GET `/api/regional`)
+
+```json
+{
+  "id": 28,
+  "nome": "COORDENADORIA DE POLÍCIA COMUNITÁRIA",
+  "ativo": true,
+  "created_at": "2026-01-29T21:17:49.000000Z",
+  "updated_at": "2026-01-29T21:17:49.000000Z",
+  "deleted_at": null
 }
 ```
 

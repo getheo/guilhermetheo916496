@@ -25,4 +25,9 @@ class Album extends Model
         return $this->belongsTo(Artista::class, 'artista_id');
     }
 
+    public function foto()
+    {
+        return $this->hasMany(FotoAlbum::class);
+    }
+
 }

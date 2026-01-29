@@ -152,12 +152,18 @@ class MusicaController extends Controller
      *     path="/api/musica/{id}",
      *     summary="Atualizar dados de uma Musica",
      *     description="Editar os dados de uma musica através do (id)",
-     *     tags={"Musicas"},     
+     *     tags={"Musicas"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID da música a ser atualizada",
+     *         @OA\Schema(type="integer", example=5)
+     *     ),    
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"id", "album_id", "mus_titulo"},
-     *             @OA\Property(property="id", type="integer", example="1"),
+     *             required={"album_id", "mus_titulo"},
      *             @OA\Property(property="album_id", type="integer", example="1"),
      *             @OA\Property(property="mus_titulo", type="string", example="Nome musica"),     
      *         )
@@ -168,7 +174,6 @@ class MusicaController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Musica atualizado com sucesso"),
      *             @OA\Property(property="musica", type="object",
-     *             @OA\Property(property="id", type="integer", example="Id da Musica"),
      *             @OA\Property(property="mus_titulo", type="string", example="Nome Musica"),
      *             @OA\Property(property="album_id", type="integer", example="1")
      *             )
@@ -182,15 +187,13 @@ class MusicaController extends Controller
 
     public function update(Request $request, Musica $musica)
     {
-        $validadeData = $request->validate([
-            'id' => 'required|integer',
+        $validadeData = $request->validate([            
             'album_id' => 'required|integer',
             'mus_titulo' => 'required|string',
         ]);
 
-        $musica->update($validadeData);
-
-        return response()->json($musica, 200);
+        $musica->update($validadeData);        
+        return response()->json(['message' => 'Música atualizada com sucesso', 'musica' => $musica], 200);
     }
 
     /**

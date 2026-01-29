@@ -66,7 +66,7 @@ class ArtistaController extends Controller
     */
     public function show(string $id)
     {
-        $artista = Artista::where('id', $id)->with(['albuns'])->first();        
+        $artista = Artista::where('id', $id)->with(['albuns', 'foto'])->first();        
 
         if (!$artista) {
             //return response('Não encontrado', 404)->json();
