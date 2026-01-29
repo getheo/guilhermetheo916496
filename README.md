@@ -2,12 +2,12 @@
 
 Candidato: Guilherme Théo Coleta Arruda | CPF: 916.496.921-53 | Inscrição: 16352 | Perfil: Engenheiro da Computação- Sênior
 <br><br>
-### PROJETO PRÁTICO - IMPLEMENTAÇÃO FULL STACK SÊNIOR - JAVA + ANGULAR/REACT
+### Projeto Prático - IMPLEMENTAÇÃO FULL STACK SÊNIOR - JAVA + ANGULAR/REACT
 Neste projeto o(a) candidato(a) implementar uma solução fullstack que possibilite o gerenciamento de artistas e seus álbuns
 <br><br>
 
-### Projeto API REST em PHP Laravel + base de dados postgreSQL + Docker Compose.
-Pórem, este repositório contém um projeto com uma solução alternativa utilizando outras tecnologias e será utilizado exclusivamente para este projeto e assim, espero que seja avaliado.
+### Projeto API REST em PHP Laravel + postgreSQL + Docker Compose
+Pórem, este repositório contém um projeto com uma solução alternativa utilizando outras tecnologias e será utilizado exclusivamente para este projeto e assim, espero que seja avaliado os conceitos de desenvolvimento.
 <br><br>
 ### 🛠 Tecnologias
 
@@ -29,12 +29,12 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 ### Faça o Clone do Projeto
 #### O projeto encontra-se no GIT na branch master, execute o comando para baixar:
 ```bash
-git clone https://github.com/getheo/api-seletivo-seplag.git
+git clone https://github.com/getheo/guilhermetheo916496.git
 ```
 <br>
 
 #### Navegue até o diretório onde realizou o clone do projeto
-`cd api-seletivo-seplag`
+`cd guilhermetheo916496`
 <br>
 
 #### Na raíz do projeto já estão os arquivos de configurações
