@@ -26,10 +26,10 @@ class AlbumSeeder extends Seeder
                 'alb_titulo' => 'Black Blooms',
             ]);
         }
-        if (!Album::where(['artista_id' => 1, 'alb_titulo' => '“The Rough Dog'])->first()) {
+        if (!Album::where(['artista_id' => 1, 'alb_titulo' => 'The Rough Dog'])->first()) {
             Album::create([
                 'artista_id' => 1,
-                'alb_titulo' => '“The Rough Dog',
+                'alb_titulo' => 'The Rough Dog',
             ]);
         }
 

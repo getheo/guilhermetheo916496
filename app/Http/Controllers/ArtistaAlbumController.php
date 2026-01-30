@@ -9,7 +9,25 @@ use Illuminate\Http\Request;
 
 class ArtistaAlbumController extends Controller
 {
-        
+    /**
+     * @OA\POST(
+     * path="/api/artistaalbum",
+     * summary="Cadastra vínculo de Artista com álbum",
+     * tags={"Artistas Albuns"},
+     * @OA\RequestBody(
+     * required=true,
+     * @OA\JsonContent(
+     * required={"art_id", "alb_id"},
+     * @OA\Property(property="art_id", type="integer", example=1),
+     * @OA\Property(property="alb_id", type="integer", example=1)
+     * )
+     * ),
+     * @OA\Response(response=201, description="Vínculo criado"),
+     * @OA\Response(response=409, description="Vínculo já existente"),
+     * @OA\Response(response=404, description="Artista ou Álbum não encontrado"),
+     * security={{"bearerAuth":{}}}
+     * )
+     */
     public function store(Request $request)
     {
         // 1. Validação de existência e tipo
@@ -38,7 +56,16 @@ class ArtistaAlbumController extends Controller
         ], 201);
     }
 
-    
+    /**
+     * @OA\DELETE(
+     * path="/api/artistaalbum/{id}",
+     * summary="Remove um vínculo",
+     * tags={"Artistas Albuns"},
+     * @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     * @OA\Response(response=200, description="Removido"),
+     * security={{"bearerAuth":{}}}
+     * )
+     */
     public function destroy($id)
     {
         $vinculo = ArtistaAlbum::find($id);

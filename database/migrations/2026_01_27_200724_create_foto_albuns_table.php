@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('fa_bucket', 255);            
             $table->string('fa_hash', 255)->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

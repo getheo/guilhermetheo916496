@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('art_id')->constrained('artista', 'id');
             $table->foreignId('alb_id')->constrained('album', 'id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

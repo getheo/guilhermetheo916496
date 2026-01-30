@@ -71,10 +71,52 @@ class MusicaController extends Controller
 
         if (!$musica) {
             //return response('Não encontrado', 404)->json();
-            return response()->json(['message' => 'Musica não encontrada', 404]);
+            return response()->json(['message' => 'Musica não encontrada'], 404);
         }
         return response()->json(['message' => 'Musica encontrada','musica' => $musica]);
     }
+
+    /**
+    *  @OA\GET(
+    *      path="/api/musica/{pesquisa}",
+    *      summary="Mostra uma Musica",
+    *      description="Pesquisa por uma musica através do (pesquisa)",
+    *      tags={"Musicas"},
+    *     @OA\Parameter(
+    *         name="pesquisa",
+    *         in="path",
+    *         required=true,
+    *         description="Texto de pesquisa da musica",
+    *         @OA\Schema(type="string", example="musica")
+    *     ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Musica Encontrada",
+    *          @OA\MediaType(
+    *              mediaType="application/json",
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=404,
+    *          description="Musica não encontrada"
+    *      ),
+    *      security={{"bearerAuth":{}}}
+    *  )
+    */
+    public function pesquisa(string $pesquisa)
+    {
+        // Limpar o input para evitar caracteres problemáticos
+        $pesquisaSegura = str_replace(['%', '_'], ['\%', '\_'], $pesquisa);
+
+        $musica = Musica::where('mus_titulo', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('mus_titulo')->get();
+
+        if ($musica->isEmpty()) {
+            //return response('Não encontrado', 404)->json();
+            return response()->json(['message' => 'Nenhuma musica encontrada com o título pesquisado'], 404);
+        }
+        return response()->json(['message' => 'Musica encontrada','musica' => $musica]);
+    }
+
 
     public function create()
     {

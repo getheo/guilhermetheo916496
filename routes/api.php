@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArtistaController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\ArquivoMusicaController;
 use App\Http\Controllers\MusicaController;
 use App\Http\Controllers\FotoAlbumController;
 
@@ -33,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('artista/{id}', [ArtistaController::class, 'show']);
     Route::put('artista/{id}', [ArtistaController::class, 'update']);
     Route::delete('artista/{id}', [ArtistaController::class, 'destroy']);
+    Route::get('artista/{pesquisa}', [ArtistaController::class, 'pesquisa']);
 
     /* Rotas para os Albuns */
     Route::get('album', [AlbumController::class, 'index']);
@@ -40,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('album/{id}', [AlbumController::class, 'show']);
     Route::put('album/{id}', [AlbumController::class, 'update']);
     Route::delete('album/{id}', [AlbumController::class, 'destroy']);
+    Route::get('album/{pesquisa}', [AlbumController::class, 'pesquisa']);
 
     /* Rotas para as Musicas */
     Route::get('musica', [MusicaController::class, 'index']);
@@ -47,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('musica/{id}', [MusicaController::class, 'show']);
     Route::put('musica/{id}', [MusicaController::class, 'update']);
     Route::delete('musica/{id}', [MusicaController::class, 'destroy']);
+    Route::get('musica/{pesquisa}', [MusicaController::class, 'pesquisa']);
 
     /* Rotas para os Foto Albuns */
     //Route::get('foto-album', [FotoAlbumController::class, 'index']);    
@@ -56,8 +60,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('foto-artista', [FotoArtistaController::class, 'upload']);
     //Route::post('foto-pessoa', [FileController::class, 'store']);
 
+    /* Rotas para as Músicas dos Albúns */
+    Route::post('arquivo-musica', [ArquivoMusicaController::class, 'upload']);
+
     /* Rotas para os Regionais */
     Route::get('regional', [RegionalController::class, 'index']);
+    Route::get('regional/{pesquisa}', [RegionalController::class, 'pesquisa']);
 
 });
 

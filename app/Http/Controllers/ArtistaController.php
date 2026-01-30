@@ -34,8 +34,7 @@ class ArtistaController extends Controller
     {
         $artista = Artista::with(['albuns'])->orderBy('art_nome')->paginate(10);
         return response()->json($artista);
-    }
-    
+    }    
         
     /**
     *  @OA\GET(
@@ -70,9 +69,49 @@ class ArtistaController extends Controller
 
         if (!$artista) {
             //return response('Não encontrado', 404)->json();
-            return response()->json(['message' => 'Artista não encontrado', 404]);
+            return response()->json(['message' => 'Artista não encontrado'], 404);
         }
         return response()->json(['message' => 'Artista encontrado','artista' => $artista]);
+    }
+
+    /**
+    *  @OA\GET(
+    *      path="/api/artista/{pesquisa}",
+    *      summary="Pesquisar um Artista",
+    *      description="Pesquise pelo nome do artista",
+    *      tags={"Artistas"},
+    *     @OA\Parameter(
+    *          name="pesquisa",
+    *          in="path",
+    *          required=true,
+    *          description="Pesquise pelo nome do artista",
+    *          @OA\Schema(type="string", example="Artista Exemplo")
+    *      ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Artista Encontrado",
+    *          @OA\MediaType(
+    *              mediaType="application/json",
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=404,
+    *          description="Artista não encontrado"
+    *      ),
+    *      security={{"bearerAuth":{}}}
+    *  )
+    */
+    public function pesquisa(string $pesquisa)
+    {
+        // Limpar o input para evitar caracteres problemáticos
+        $pesquisaSegura = str_replace(['%', '_'], ['\%', '\_'], $pesquisa);
+
+        $artistaPesquisa = Artista::where('art_nome', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('art_nome')->get();
+
+        if ($artistaPesquisa->isEmpty()) {            
+            return response()->json(['message' => 'Artista pesquisado não foi encontrado'], 404);
+        }
+        return response()->json(['message' => 'Artista pesquisado encontrado','artista' => $artistaPesquisa]);
     }
 
     public function create()
@@ -131,7 +170,7 @@ class ArtistaController extends Controller
             return response()->json(['message' => 'Artista cadastrado com sucesso.','artista' => $artista], 200);
         }
 
-        return response()->json(['message' => 'Artista com esse nome já cadastrada.', 404]);
+        return response()->json(['message' => 'Artista com esse nome já cadastrada.'], 404);
     }
     
 

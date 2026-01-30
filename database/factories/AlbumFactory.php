@@ -19,7 +19,7 @@ class AlbumFactory extends Factory
     {
         return [
             'artista_id' => Artista::all()->random()->id,
-            'alb_titulo' => fake()->text(),
+            'alb_titulo' => fake()->realText(50),
             'alb_data_lancamento' => fake()->date(),
             'alb_status' => fake()->boolean(),
         ];

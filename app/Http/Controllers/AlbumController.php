@@ -75,6 +75,48 @@ class AlbumController extends Controller
         return response()->json(['message' => 'Album encontrado','album' => $album]);
     }
 
+    /**
+    *  @OA\GET(
+    *      path="/api/album/{pesquisa}",
+    *      summary="Pesquisa Album pelo título",
+    *      description="Pesquisa por um album através do titulo",
+    *      tags={"Albuns"},
+    *     @OA\Parameter(
+    *          name="pesquisa",
+    *          in="path",
+    *          required=true,
+    *          description="Titulo de pesquisa do album",
+    *          @OA\Schema(type="string", example="album")
+    *     ),
+    *      @OA\Response(
+    *          response=200,
+    *          description="Album Encontrado",
+    *          @OA\MediaType(
+    *              mediaType="application/json",
+    *          )
+    *      ),
+    *      @OA\Response(
+    *          response=404,
+    *          description="Album não encontrado"
+    *      ),
+    *      security={{"bearerAuth":{}}}
+    *  )
+    */
+    public function pesquisa(string $pesquisa)
+    {
+        // Limpar o input para evitar caracteres problemáticos
+        $pesquisaSegura = str_replace(['%', '_'], ['\%', '\_'], $pesquisa);
+
+        $albumPesquisa = Album::where('alb_titulo', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('alb_titulo')->get();
+
+        if ($albumPesquisa->isEmpty()) {
+            //return response('Não encontrado', 404)->json();
+            return response()->json(['message' => 'Nenhum album encontrado com o título pesquisado'], 404);
+        }
+        return response()->json(['message' => 'Album encontrado','album' => $albumPesquisa]);
+    }
+
+
     public function create()
     {
         //
@@ -127,11 +169,16 @@ class AlbumController extends Controller
                 'artista_id' => $validadeData['artista_id'],
                 'alb_titulo' => $validadeData['alb_titulo'],
             ]);
+
+            $artistaAlbum = ArtistaAlbum::firstOrCreate([
+                'art_id' => $validadeData['artista_id'],
+                'alb_id' => $album->id,
+            ]);
             
-            return response()->json(['message' => 'Album cadastrado e vinculado ao artista com sucesso.','album' => $album], 200);
+            return response()->json(['message' => 'Album cadastrado e vinculado ao artista com sucesso.','album' => $album, 'artista_album' => $artistaAlbum], 200);
         }
 
-        return response()->json(['message' => 'Album com esse nome já cadastrada.', 404]);
+        return response()->json(['message' => 'Album com esse nome já cadastrada.'], 404);
     }
 
     public function edit(Album $album)
@@ -174,11 +221,11 @@ class AlbumController extends Controller
         $validadeData = $request->validate([
             'artista_id' => 'required|integer',
             'alb_titulo' => 'required|string',
-        ]);
+        ]);        
 
         $album->update($validadeData);
 
-        return response()->json($album, 200);
+        return response()->json(['message' => 'Album atualizado com sucesso.', 'album' => $album], 200);
     }    
 
     /**
@@ -217,9 +264,11 @@ class AlbumController extends Controller
         
         if (!$album) {
             return response()->json(['message' => 'Album não encontrado.'], 404);
-        }
+        }        
+
+        $artistaAlbum = ArtistaAlbum::where('alb_id', $album->id)->delete();
 
         $album->delete();        
-        return response()->json(['message' => 'Album excluído com sucesso'], 200);
+        return response()->json(['message' => 'Album excluído com sucesso', 'album' => $album, 'artista_album' => $artistaAlbum], 200);
     }
 }

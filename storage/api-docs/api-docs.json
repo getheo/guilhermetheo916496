@@ -222,6 +222,187 @@
                 ]
             }
         },
+        "/api/album/{pesquisa}": {
+            "get": {
+                "tags": [
+                    "Albuns"
+                ],
+                "summary": "Pesquisa Album pelo título",
+                "description": "Pesquisa por um album através do titulo",
+                "operationId": "2c3e3e10d1b34d338304489ce836539c",
+                "parameters": [
+                    {
+                        "name": "pesquisa",
+                        "in": "path",
+                        "description": "Titulo de pesquisa do album",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "album"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Album Encontrado",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Album não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/arquivo-musica": {
+            "post": {
+                "tags": [
+                    "Arquivo Musica MP3"
+                ],
+                "summary": "Faz o upload de um arquivo de musica",
+                "description": "Upload de Arquivo",
+                "operationId": "7d16d66fd7a7ad79c71a89450426306c",
+                "parameters": [
+                    {
+                        "name": "album_id",
+                        "in": "query",
+                        "description": "Nº de identificação do Album",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Arquivo de música enviado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "file": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro no upload do MP3"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/artistaalbum": {
+            "post": {
+                "tags": [
+                    "Artistas Albuns"
+                ],
+                "summary": "Cadastra vínculo de Artista com álbum",
+                "operationId": "a23623e6b037ed5e790505568ed30b73",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "art_id",
+                                    "alb_id"
+                                ],
+                                "properties": {
+                                    "art_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "alb_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Vínculo criado"
+                    },
+                    "409": {
+                        "description": "Vínculo já existente"
+                    },
+                    "404": {
+                        "description": "Artista ou Álbum não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/artistaalbum/{id}": {
+            "delete": {
+                "tags": [
+                    "Artistas Albuns"
+                ],
+                "summary": "Remove um vínculo",
+                "operationId": "90b066a2cd7826e2b1f3fa6438f90c3a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Removido"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/artista": {
             "get": {
                 "tags": [
@@ -434,6 +615,44 @@
                         "content": {
                             "application/json": {}
                         }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/artista/{pesquisa}": {
+            "get": {
+                "tags": [
+                    "Artistas"
+                ],
+                "summary": "Pesquisar um Artista",
+                "description": "Pesquise pelo nome do artista",
+                "operationId": "19b43f69ea24019e21b2b5be53259e05",
+                "parameters": [
+                    {
+                        "name": "pesquisa",
+                        "in": "path",
+                        "description": "Pesquise pelo nome do artista",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Artista Exemplo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Artista Encontrado",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Artista não encontrado"
                     }
                 },
                 "security": [
@@ -924,6 +1143,44 @@
                 ]
             }
         },
+        "/api/musica/{pesquisa}": {
+            "get": {
+                "tags": [
+                    "Musicas"
+                ],
+                "summary": "Mostra uma Musica",
+                "description": "Pesquisa por uma musica através do (pesquisa)",
+                "operationId": "221ee3598723db33c96fa3dc1b0b8595",
+                "parameters": [
+                    {
+                        "name": "pesquisa",
+                        "in": "path",
+                        "description": "Texto de pesquisa da musica",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "musica"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Musica Encontrada",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Musica não encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/regional": {
             "get": {
                 "tags": [
@@ -954,6 +1211,44 @@
                     }
                 ]
             }
+        },
+        "/api/regional/{pesquisa}": {
+            "get": {
+                "tags": [
+                    "Regionais"
+                ],
+                "summary": "Pesquisa uma Regional pelo nome",
+                "description": "Pesquisa por uma regional através do (pesquisa)",
+                "operationId": "ac84b51a0e8dd6f65f9d24b8dde45eff",
+                "parameters": [
+                    {
+                        "name": "pesquisa",
+                        "in": "path",
+                        "description": "Texto de pesquisa da regional",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "regional"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Regional Encontrada",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Musica não encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -969,6 +1264,14 @@
         {
             "name": "Albuns",
             "description": "Albuns"
+        },
+        {
+            "name": "Arquivo Musica MP3",
+            "description": "Arquivo Musica MP3"
+        },
+        {
+            "name": "Artistas Albuns",
+            "description": "Artistas Albuns"
         },
         {
             "name": "Artistas",

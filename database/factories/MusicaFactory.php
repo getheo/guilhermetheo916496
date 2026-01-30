@@ -19,8 +19,7 @@ class MusicaFactory extends Factory
     {
         return [
             'album_id' => Album::all()->random()->id,
-            'mus_titulo' => fake()->text(),
-            'mus_arquivo' => fake()->text(),
+            'mus_titulo' => fake()->realText(50),            
             'mus_status' => fake()->boolean(),
         ];
     }

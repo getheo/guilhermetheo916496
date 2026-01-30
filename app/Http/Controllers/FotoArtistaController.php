@@ -24,7 +24,7 @@ class FotoArtistaController extends Controller
      *         name="artista_id",
      *         in="query",
      *         description="Nº de identificação do Artista",
-     *         required=true,
+     *         required=true
      *     ),
      *     @OA\RequestBody(
      *         required=true,
@@ -57,15 +57,15 @@ class FotoArtistaController extends Controller
     
     public function upload(Request $request)
     {
-        $artista = Artista::where('id', $request->artista_id)->first();
-
         $request->validate([
             'artista_id' => 'required|integer|exists:artista,id',
             'file' => 'required|image|mimes:jpg,jpeg|max:10240',
         ]);
 
+        $artista = Artista::where('id', $request->artista_id)->first();
+
         if(!$artista){
-            return response()->json(['message' => 'Artista não encontrado', 404]);
+            return response()->json(['message' => 'Artista não encontrado'], 404);
         }        
         
         $path = $request->file('file')->store('artista/'.$request->artista_id, 's3');
@@ -83,6 +83,6 @@ class FotoArtistaController extends Controller
             'foto_url' => $path,
         ]);
 
-        return response()->json(['message' => 'Foto Artista cadastrada com sucesso.', 'foto-artista' => $foto, 200]);
+        return response()->json(['message' => 'Foto Artista cadastrada com sucesso.', 'foto-artista' => $foto], 200);
     }    
 }

@@ -3,23 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
-use App\Models\FotoAlbum;
-use App\Models\Artista;
+use App\Models\ArquivoMusica;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
 
-class FotoAlbumController extends Controller
+class ArquivoMusicaController extends Controller
 {
     /**
      * Upload de Arquivo
      *
      * @OA\POST(
-     *     path="/api/foto-album",
-     *     summary="Faz o upload de uma foto de album",
-     *     tags={"Foto Upload"},
+     *     path="/api/arquivo-musica",
+     *     summary="Faz o upload de um arquivo de musica",
+     *     tags={"Arquivo Musica MP3"},
      *     @OA\Parameter(
      *         name="album_id",
      *         in="query",
@@ -41,14 +40,14 @@ class FotoAlbumController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Imagem do Album enviado com sucesso",
+     *         description="Arquivo de música enviado com sucesso",
      *         @OA\JsonContent(
      *             @OA\Property(property="success", type="boolean"),
      *             @OA\Property(property="message", type="string"),
      *             @OA\Property(property="file", type="string")
      *         )
      *     ),
-     *     @OA\Response(response=400, description="Erro no upload"),
+     *     @OA\Response(response=400, description="Erro no upload do MP3"),
      *     security={{"bearerAuth":{}}}
      * )
      */
@@ -58,7 +57,7 @@ class FotoAlbumController extends Controller
     {
         $request->validate([
             'album_id' => 'required|integer|exists:album,id',
-            'file' => 'required|image|mimes:jpg,jpeg|max:10240',
+            'file' => 'required|file|mimes:mp3|max:10240',
         ]);
 
         $album = Album::where('id', $request->album_id)->first();
@@ -67,10 +66,10 @@ class FotoAlbumController extends Controller
             return response()->json(['message' => 'Album não encontrado'], 404);
         }        
         
-        $path = $request->file('file')->store('album/'.$request->album_id, 's3');
+        $path = $request->file('file')->store('musica/'.$request->album_id, 's3');
         //$path = Storage::disk('s3')->put('uploads/{$request->art_id}', $request->file('file'));
         
-        $foto = FotoAlbum::create([
+        $arquivo = ArquivoMusica::create([
             'album_id' => $album->id,
             'fa_data' => Carbon::now(),
             'fa_bucket' => env('AWS_BUCKET'),
@@ -78,10 +77,10 @@ class FotoAlbumController extends Controller
             
         ]);
         return response()->json([
-            'message' => 'Foto enviada com sucesso!',
-            'foto_url' => $path,
+            'message' => 'Arquivo de música enviado com sucesso!',
+            'arquivo_url' => $path,
         ]);
 
-        return response()->json(['message' => 'Foto cadastrada com sucesso.', 'foto-album' => $foto], 200);
+        return response()->json(['message' => 'Arquivo de música cadastrado com sucesso.', 'arquivo-musica' => $arquivo], 200);
     }    
 }
