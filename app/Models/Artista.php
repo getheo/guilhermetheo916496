@@ -18,7 +18,7 @@ class Artista extends Model
     
 
     // Colunas que podem ser preenchidas em massa (opcional)
-    protected $fillable = ['art_nome', 'art_descricao', 'art_status'];
+    protected $fillable = ['art_nome', 'art_descricao'];
 
     public function albuns()
     {

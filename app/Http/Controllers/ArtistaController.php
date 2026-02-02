@@ -76,7 +76,7 @@ class ArtistaController extends Controller
 
     /**
     *  @OA\GET(
-    *      path="/api/artista/{pesquisa}",
+    *      path="/api/artistas/{pesquisa}",
     *      summary="Pesquisar um Artista",
     *      description="Pesquise pelo nome do artista",
     *      tags={"Artistas"},
@@ -106,7 +106,7 @@ class ArtistaController extends Controller
         // Limpar o input para evitar caracteres problemáticos
         $pesquisaSegura = str_replace(['%', '_'], ['\%', '\_'], $pesquisa);
 
-        $artistaPesquisa = Artista::where('art_nome', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('art_nome')->get();
+        $artistaPesquisa = Artista::with(['albuns'])->where('art_nome', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('art_nome')->get();
 
         if ($artistaPesquisa->isEmpty()) {            
             return response()->json(['message' => 'Artista pesquisado não foi encontrado'], 404);
@@ -184,15 +184,21 @@ class ArtistaController extends Controller
      * @OA\PUT(
      *     path="/api/artista/{id}",
      *     summary="Atualizar dados de um Artista",
-     *     description="Editar os dados de um artista através do (id)",
-     *     tags={"Artistas"},     
+     *     description="Editar os dados de um artista através do ID na URL",
+     *     tags={"Artistas"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID do artista a ser atualizado",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"id", "art_nome", "art_descricao"},
-     *             @OA\Property(property="id", type="integer", example="1"),
-     *             @OA\Property(property="art_nome", type="string", example="Nome artista"),
-     *             @OA\Property(property="art_descricao", type="string", example="Descrição artista"),     
+     *             required={"art_nome","art_descricao"},
+     *             @OA\Property(property="art_nome", type="string", example="Nome do artista"),
+     *             @OA\Property(property="art_descricao", type="string", example="Descrição do artista")
      *         )
      *     ),
      *     @OA\Response(
@@ -201,27 +207,39 @@ class ArtistaController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Artista atualizado com sucesso"),
      *             @OA\Property(property="artista", type="object",
-     *             @OA\Property(property="art_nome", type="string", example="Nome Artista")
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="art_nome", type="string", example="Nome do artista"),
+     *                 @OA\Property(property="art_descricao", type="string", example="Descrição do artista")
      *             )
      *         )
      *     ),
      *     @OA\Response(response=400, description="Requisição inválida"),
-     *     @OA\Response(response=404, description="Endereco não encontrado"),
+     *     @OA\Response(response=404, description="Artista não encontrado"),
      *     security={{"bearerAuth":{}}}
      * )
      */
 
-    public function update(Request $request, Artista $artista)
+    public function update($id, Request $request)
     {
-        $validadeData = $request->validate([
-            'id' => 'required|integer',
+
+        $artista = Artista::where('id', $id)->first();  
+
+        if (!$artista) {
+            return response()->json(['message' => 'Artista não encontrado.'], 404);
+        }
+
+        $validadeData = $request->validate([            
             'art_nome' => 'required|string',
             'art_descricao' => 'required|string',
         ]);
 
         $artista->update($validadeData);
+        $artista->refresh();
 
-        return response()->json($artista, 200);
+        return response()->json([
+            'message' => 'Artista atualizado com sucesso',
+            'artista' => $artista->toArray()
+        ], 200);
     }
 
     /**

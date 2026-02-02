@@ -116,8 +116,20 @@
                     "Albuns"
                 ],
                 "summary": "Atualizar dados de um Album",
-                "description": "Editar os dados de um album através do (id)",
+                "description": "Editar os dados de um album através do ID na URL. Para escolher o artista, consulte o endpoint GET /api/artistas para obter os IDs disponíveis.",
                 "operationId": "a389aa3f7a8e77e625a09a54e42ef1c1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do album a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -129,12 +141,13 @@
                                 ],
                                 "properties": {
                                     "artista_id": {
+                                        "description": "ID do artista. Consulte GET /api/artistas para ver todos os artistas disponíveis",
                                         "type": "integer",
-                                        "example": "1"
+                                        "example": 1
                                     },
                                     "alb_titulo": {
                                         "type": "string",
-                                        "example": "Titulo album"
+                                        "example": "Título do album"
                                     }
                                 },
                                 "type": "object"
@@ -155,13 +168,17 @@
                                         },
                                         "album": {
                                             "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
                                                 "artista_id": {
                                                     "type": "integer",
-                                                    "example": "1"
+                                                    "example": 1
                                                 },
                                                 "alb_titulo": {
                                                     "type": "string",
-                                                    "example": "Nome Album"
+                                                    "example": "Título do album"
                                                 }
                                             },
                                             "type": "object"
@@ -173,7 +190,10 @@
                         }
                     },
                     "400": {
-                        "description": "Endereco não encontrado"
+                        "description": "Requisição inválida"
+                    },
+                    "404": {
+                        "description": "Album não encontrado"
                     }
                 },
                 "security": [
@@ -222,14 +242,14 @@
                 ]
             }
         },
-        "/api/album/{pesquisa}": {
+        "/api/albuns/{pesquisa}": {
             "get": {
                 "tags": [
                     "Albuns"
                 ],
                 "summary": "Pesquisa Album pelo título",
                 "description": "Pesquisa por um album através do titulo",
-                "operationId": "2c3e3e10d1b34d338304489ce836539c",
+                "operationId": "19e9ef13016179ad06b6665dfe55e3bb",
                 "parameters": [
                     {
                         "name": "pesquisa",
@@ -514,30 +534,37 @@
                     "Artistas"
                 ],
                 "summary": "Atualizar dados de um Artista",
-                "description": "Editar os dados de um artista através do (id)",
+                "description": "Editar os dados de um artista através do ID na URL",
                 "operationId": "ad7ddf3d1210e2353559d9a6e7e29d45",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do artista a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "id",
                                     "art_nome",
                                     "art_descricao"
                                 ],
                                 "properties": {
-                                    "id": {
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
                                     "art_nome": {
                                         "type": "string",
-                                        "example": "Nome artista"
+                                        "example": "Nome do artista"
                                     },
                                     "art_descricao": {
                                         "type": "string",
-                                        "example": "Descrição artista"
+                                        "example": "Descrição do artista"
                                     }
                                 },
                                 "type": "object"
@@ -558,9 +585,17 @@
                                         },
                                         "artista": {
                                             "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
                                                 "art_nome": {
                                                     "type": "string",
-                                                    "example": "Nome Artista"
+                                                    "example": "Nome do artista"
+                                                },
+                                                "art_descricao": {
+                                                    "type": "string",
+                                                    "example": "Descrição do artista"
                                                 }
                                             },
                                             "type": "object"
@@ -575,7 +610,7 @@
                         "description": "Requisição inválida"
                     },
                     "404": {
-                        "description": "Endereco não encontrado"
+                        "description": "Artista não encontrado"
                     }
                 },
                 "security": [
@@ -624,14 +659,14 @@
                 ]
             }
         },
-        "/api/artista/{pesquisa}": {
+        "/api/artistas/{pesquisa}": {
             "get": {
                 "tags": [
                     "Artistas"
                 ],
                 "summary": "Pesquisar um Artista",
                 "description": "Pesquise pelo nome do artista",
-                "operationId": "19b43f69ea24019e21b2b5be53259e05",
+                "operationId": "d190e45f9647b6c40cf01f3422f26c88",
                 "parameters": [
                     {
                         "name": "pesquisa",
@@ -1041,6 +1076,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "description": "ID do álbum. Consulte GET /api/album para ver todos os álbuns disponíveis.",
                                 "required": [
                                     "album_id",
                                     "mus_titulo"
@@ -1143,14 +1179,14 @@
                 ]
             }
         },
-        "/api/musica/{pesquisa}": {
+        "/api/musicas/{pesquisa}": {
             "get": {
                 "tags": [
                     "Musicas"
                 ],
                 "summary": "Mostra uma Musica",
                 "description": "Pesquisa por uma musica através do (pesquisa)",
-                "operationId": "221ee3598723db33c96fa3dc1b0b8595",
+                "operationId": "539f66387323e0bed112e891636b13c3",
                 "parameters": [
                     {
                         "name": "pesquisa",

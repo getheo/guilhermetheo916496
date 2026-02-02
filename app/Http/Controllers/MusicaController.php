@@ -78,7 +78,7 @@ class MusicaController extends Controller
 
     /**
     *  @OA\GET(
-    *      path="/api/musica/{pesquisa}",
+    *      path="/api/musicas/{pesquisa}",
     *      summary="Mostra uma Musica",
     *      description="Pesquisa por uma musica através do (pesquisa)",
     *      tags={"Musicas"},
@@ -108,7 +108,7 @@ class MusicaController extends Controller
         // Limpar o input para evitar caracteres problemáticos
         $pesquisaSegura = str_replace(['%', '_'], ['\%', '\_'], $pesquisa);
 
-        $musica = Musica::where('mus_titulo', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('mus_titulo')->get();
+        $musica = Musica::with(['album'])->where('mus_titulo', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('mus_titulo')->get();
 
         if ($musica->isEmpty()) {
             //return response('Não encontrado', 404)->json();
@@ -207,7 +207,8 @@ class MusicaController extends Controller
      *         @OA\JsonContent(
      *             required={"album_id", "mus_titulo"},
      *             @OA\Property(property="album_id", type="integer", example="1"),
-     *             @OA\Property(property="mus_titulo", type="string", example="Nome musica"),     
+     *             @OA\Property(property="mus_titulo", type="string", example="Nome musica"), 
+     *             description="ID do álbum. Consulte GET /api/album para ver todos os álbuns disponíveis.",    
      *         )
      *     ),
      *     @OA\Response(
@@ -227,15 +228,26 @@ class MusicaController extends Controller
      * )
      */
 
-    public function update(Request $request, Musica $musica)
+    public function update($id, Request $request)
     {
+        $musica = Musica::where('id', $id)->first();        
+
+        if (!$musica) {
+            return response()->json(['message' => 'Musica não encontrada.'], 404);
+        }
+
         $validadeData = $request->validate([            
             'album_id' => 'required|integer',
             'mus_titulo' => 'required|string',
         ]);
 
-        $musica->update($validadeData);        
-        return response()->json(['message' => 'Música atualizada com sucesso', 'musica' => $musica], 200);
+        $musica->update($validadeData); 
+        $musica->refresh();
+        
+        return response()->json([
+            'message' => 'Música atualizada com sucesso.',
+            'musica' => $musica->toArray()
+        ], 200);
     }
 
     /**

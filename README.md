@@ -21,6 +21,7 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 
 ### 🛠 Pré-requisitos
 - <a href="https://git-scm.com/downloads">GIT</a> instalado para baixar o projeto
+- <a href="https://laravel.com/docs/12.x/installation">Laravel</a> Framework PHP
 - <a href="https://www.docker.com/products/docker-desktop/">Docker</a> Desktop instalado
 - <a href="https://getcomposer.org/">Composer</a> (dependências do PHP Laravel)
 <br>

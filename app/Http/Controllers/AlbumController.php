@@ -77,7 +77,7 @@ class AlbumController extends Controller
 
     /**
     *  @OA\GET(
-    *      path="/api/album/{pesquisa}",
+    *      path="/api/albuns/{pesquisa}",
     *      summary="Pesquisa Album pelo título",
     *      description="Pesquisa por um album através do titulo",
     *      tags={"Albuns"},
@@ -107,7 +107,7 @@ class AlbumController extends Controller
         // Limpar o input para evitar caracteres problemáticos
         $pesquisaSegura = str_replace(['%', '_'], ['\%', '\_'], $pesquisa);
 
-        $albumPesquisa = Album::where('alb_titulo', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('alb_titulo')->get();
+        $albumPesquisa = Album::with(['artista'])->where('alb_titulo', 'ILIKE', '%' . $pesquisaSegura . '%')->orderBy('alb_titulo')->get();
 
         if ($albumPesquisa->isEmpty()) {
             //return response('Não encontrado', 404)->json();
@@ -190,14 +190,26 @@ class AlbumController extends Controller
      * @OA\PUT(
      *     path="/api/album/{id}",
      *     summary="Atualizar dados de um Album",
-     *     description="Editar os dados de um album através do (id)",
-     *     tags={"Albuns"},     
+     *     description="Editar os dados de um album através do ID na URL. Para escolher o artista, consulte o endpoint GET /api/artistas para obter os IDs disponíveis.",
+     *     tags={"Albuns"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID do album a ser atualizado",
+     *         required=true,
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"artista_id", "alb_titulo"},
-     *             @OA\Property(property="artista_id", type="integer", example="1"),
-     *             @OA\Property(property="alb_titulo", type="string", example="Titulo album"),     
+     *             required={"artista_id","alb_titulo"},
+     *             @OA\Property(
+     *                 property="artista_id",
+     *                 type="integer",
+     *                 description="ID do artista. Consulte GET /api/artistas para ver todos os artistas disponíveis",
+     *                 example=1
+     *             ),
+     *             @OA\Property(property="alb_titulo", type="string", example="Título do album")
      *         )
      *     ),
      *     @OA\Response(
@@ -206,26 +218,37 @@ class AlbumController extends Controller
      *         @OA\JsonContent(
      *             @OA\Property(property="message", type="string", example="Album atualizado com sucesso"),
      *             @OA\Property(property="album", type="object",
-     *             @OA\Property(property="artista_id", type="integer", example="1"),
-     *             @OA\Property(property="alb_titulo", type="string", example="Nome Album"),
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="artista_id", type="integer", example=1),
+     *                 @OA\Property(property="alb_titulo", type="string", example="Título do album")
      *             )
      *         )
      *     ),
-     *     @OA\Response(response=400, description="Endereco não encontrado"),
+     *     @OA\Response(response=400, description="Requisição inválida"),
+     *     @OA\Response(response=404, description="Album não encontrado"),
      *     security={{"bearerAuth":{}}}
      * )
      */
-
-    public function update(Request $request, Album $album)
+    public function update($id, Request $request)
     {
+        $album = Album::where('id', $id)->first();  
+
+        if (!$album) {
+            return response()->json(['message' => 'Album não encontrado.'], 404);
+        }
+
         $validadeData = $request->validate([
             'artista_id' => 'required|integer',
             'alb_titulo' => 'required|string',
         ]);        
 
         $album->update($validadeData);
+        $album->refresh();
 
-        return response()->json(['message' => 'Album atualizado com sucesso.', 'album' => $album], 200);
+        return response()->json([
+            'message' => 'Album atualizado com sucesso.',
+            'album' => $album->toArray()
+        ], 200);
     }    
 
     /**

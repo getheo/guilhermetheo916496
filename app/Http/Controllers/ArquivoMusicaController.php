@@ -57,7 +57,7 @@ class ArquivoMusicaController extends Controller
     {
         $request->validate([
             'album_id' => 'required|integer|exists:album,id',
-            'file' => 'required|file|mimes:mp3|max:10240',
+            'file' => 'required|file|mimetypes:audio/mpeg|max:10240',
         ]);
 
         $album = Album::where('id', $request->album_id)->first();
