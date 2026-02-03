@@ -6,8 +6,12 @@ Candidato: Guilherme Théo Coleta Arruda | CPF: 916.496.921-53 | Inscrição: 16
 Neste projeto o(a) candidato(a) implementar uma solução fullstack que possibilite o gerenciamento de artistas e seus álbuns
 <br><br>
 
-### Projeto API REST em PHP Laravel + postgreSQL + Docker Compose
+### Projeto API REST em PHP Laravel + postgreSQL + Docker Compose (Backend)
 Pórem, este repositório contém um projeto com uma solução alternativa utilizando outras tecnologias e será utilizado exclusivamente para este projeto e assim, espero que seja avaliado os conceitos de desenvolvimento.
+
+### FrontEnd Tailwind + Liveware + Alphine
+O projeto com uma solução alternativa utilizando outras tecnologias e será utilizado exclusivamente para este projeto e assim, espero que seja avaliado os conceitos de desenvolvimento.
+
 <br><br>
 ### 🛠 Tecnologias
 
@@ -17,6 +21,12 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 - PostgreSQL
 - MinIO (armazenamento das fotos)
 - Docker e Docker Compose
+- NodeJS (Ambiente de execução JavaScript) 
+- Liveware (Cria interfaces dinâmicas e reativas usando apenas PHP)
+- Vite (Ferramenta de construção de front-end)
+- Tailwind (framework CSS)
+- Alpine.JS (framework JavaScript)
+
 <br>
 
 ### 🛠 Pré-requisitos
@@ -24,13 +34,16 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 - <a href="https://laravel.com/docs/12.x/installation">Laravel</a> Framework PHP
 - <a href="https://www.docker.com/products/docker-desktop/">Docker</a> Desktop instalado
 - <a href="https://getcomposer.org/">Composer</a> (dependências do PHP Laravel)
+- <a href="https://laravel.com/docs/12.x/vite">Vite</a>
+- <a href="https://getcomposer.org/">NodeJS</a> (npm)
+- <a href="https://livewire.laravel.com/docs/4.x/quickstart">Liveware</a>
 <br>
 
 
 ### Faça o Clone do Projeto
-#### O projeto encontra-se no GIT na branch main, execute o comando para baixar:
+#### O projeto encontra-se no GIT na branch fullstack, execute o comando para baixar:
 ```bash
-git clone https://github.com/getheo/guilhermetheo916496.git
+git clone -b fullstack https://github.com/getheo/guilhermetheo916496.git
 ```
 <br>
 
@@ -49,6 +62,26 @@ git clone https://github.com/getheo/guilhermetheo916496.git
 composer install
 ```
 <br>
+
+#### Instalação das dependências do Liveware
+```bash
+composer require livewire/livewire
+```
+<br>
+
+#### Instale as bibliotecas do NodeJS
+```bash
+npm install
+```
+<br>
+
+
+#### Iniciar uma instância em produção do NodeJS
+```bash
+npm run build 
+```
+<br>
+
 
 ### 🐳 Verificando o Docker
 
@@ -126,6 +159,13 @@ docker exec api-seletivo-seplag php artisan l5-swagger:generate
 Execute o comando abaixo para instanciar o servidor web no container (api-seletivo-seplag)
 ```bash
 docker exec api-seletivo-seplag php artisan serve
+```
+<br>
+
+### 🌐 Iniciando o Vite no Container
+Instanciar o servidor web no container (api-seletivo-seplag)
+```bash
+docker exec api-seletivo-seplag npm run dev
 ```
 <br>
 

@@ -1,5 +1,3 @@
-#version: '3.9'
-
 services:
   app:
     build: .
@@ -10,31 +8,23 @@ services:
     volumes:
       - .:/var/www/html
     ports:
-      - "8000:8000"
+      - "8000:80"
     env_file:
       - .env
+    environment:
+      DB_HOST: db
+      DB_DATABASE: postgres
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      FILESYSTEM_DISK: s3
+      AWS_ACCESS_KEY_ID: minio
+      AWS_SECRET_ACCESS_KEY: miniostorage
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_BUCKET: mybucket
+      AWS_ENDPOINT: http://minio:9000
     depends_on:
       - db
       - minio
-    environment:
-      - DB_HOST=db
-      - DB_DATABASE=postgres
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - FILESYSTEM_DISK=s3
-      - AWS_ACCESS_KEY_ID=minio
-      - AWS_SECRET_ACCESS_KEY=miniostorage
-      - AWS_DEFAULT_REGION=us-east-1
-      - AWS_BUCKET=mybucket
-      - AWS_ENDPOINT=http://minio:9000
-    command: >
-      sh -c "chmod -R 777 storage bootstrap/cache &&
-            chown -R www-data:www-data storage bootstrap/cache &&
-            sleep 10 &&
-            php artisan key:generate &&
-            php artisan migrate --seed --force &&
-            php artisan l5-swagger:generate &&
-            php artisan serve --host=0.0.0.0 --port=8000"
     networks:
       - laravel_network
 
@@ -52,21 +42,20 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - laravel_network
-  
+
   minio:
     image: minio/minio
     container_name: minio_server
     restart: always
     environment:
       MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: miniostorage      
-      MINIO_DEFAULT_BUCKETS: mybucket
+      MINIO_ROOT_PASSWORD: miniostorage
     ports:
       - "9000:9000"
       - "9090:9090"
-    command: server /data --console-address ":9090"     
+    command: server /data --console-address ":9090"
     volumes:
-      - minio-data:/data            
+      - minio-data:/data
     networks:
       - laravel_network
 
@@ -78,10 +67,11 @@ services:
       - laravel_network
     entrypoint: >
       /bin/sh -c "
-        sleep 10 &&
-        mc alias set myminio http://minio:9000 minio miniostorage &&
-        mc policy set public myminio/mybucket &&
-        mc mb myminio/mybucket || true"
+      sleep 10 &&
+      mc alias set myminio http://minio:9000 minio miniostorage &&
+      mc mb myminio/mybucket || true &&
+      mc policy set public myminio/mybucket
+      "
 
 networks:
   laravel_network:
