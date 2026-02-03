@@ -2,7 +2,7 @@
 
 Candidato: Guilherme Théo Coleta Arruda | CPF: 916.496.921-53 | Inscrição: 16352 | Perfil: Engenheiro da Computação- Sênior
 <br><br>
-### Projeto Prático - IMPLEMENTAÇÃO FULL STACK SÊNIOR - JAVA + ANGULAR/REACT
+### Projeto Prático - IMPLEMENTAÇÃO BACK END SÊNIOR
 Neste projeto o(a) candidato(a) implementar uma solução fullstack que possibilite o gerenciamento de artistas e seus álbuns
 <br><br>
 
