@@ -7,30 +7,42 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
+        <style>
+            :root {
+                --brand-color: #232c77;
+                --brand-hover: #1a215a;
+            }
+            /* Sobrescrevendo classes utilitárias para usar a cor da marca */
+            .bg-brand { background-color: var(--brand-color) !important; }
+            .text-brand { color: var(--brand-color) !important; }
+            .border-brand { border-color: var(--brand-color) !important; }
+        </style>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="font-sans antialiased bg-gray-50">
+        <div class="min-h-screen">
             <livewire:layout.navigation />
 
-            <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white shadow">
+                <header class="bg-brand shadow-lg">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+                        <div class="text-white">
+                            {{ $header }}
+                        </div>
                     </div>
                 </header>
             @endif
 
-            <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
         </div>
+
+        @livewireScripts
     </body>
 </html>

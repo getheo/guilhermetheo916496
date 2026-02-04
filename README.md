@@ -6,11 +6,11 @@ Candidato: Guilherme Théo Coleta Arruda | CPF: 916.496.921-53 | Inscrição: 16
 Neste projeto o(a) candidato(a) implementar uma solução fullstack que possibilite o gerenciamento de artistas e seus álbuns
 <br><br>
 
-### Projeto API REST em PHP Laravel + postgreSQL + Docker Compose (Backend)
+### BACK END: Projeto API REST em PHP Laravel + postgreSQL + Docker Compose
 Pórem, este repositório contém um projeto com uma solução alternativa utilizando outras tecnologias e será utilizado exclusivamente para este projeto e assim, espero que seja avaliado os conceitos de desenvolvimento.
 
-### FrontEnd Tailwind + Liveware + Alphine
-O projeto com uma solução alternativa utilizando outras tecnologias e será utilizado exclusivamente para este projeto e assim, espero que seja avaliado os conceitos de desenvolvimento.
+### FRONT END: NodeJS + Livewire + TailwindCSS + Volt + Alpine
+Projeto frontend utilizando as principais tecnologias de desenvolvimento.
 
 <br><br>
 ### 🛠 Tecnologias
@@ -22,7 +22,7 @@ O projeto com uma solução alternativa utilizando outras tecnologias e será ut
 - MinIO (armazenamento das fotos)
 - Docker e Docker Compose
 - NodeJS (Ambiente de execução JavaScript) 
-- Liveware (Cria interfaces dinâmicas e reativas usando apenas PHP)
+- Livewire (Cria interfaces dinâmicas e reativas usando apenas PHP)
 - Vite (Ferramenta de construção de front-end)
 - Tailwind (framework CSS)
 - Alpine.JS (framework JavaScript)
@@ -32,15 +32,19 @@ O projeto com uma solução alternativa utilizando outras tecnologias e será ut
 ### 🛠 Pré-requisitos
 - <a href="https://git-scm.com/downloads">GIT</a> instalado para baixar o projeto
 - <a href="https://laravel.com/docs/12.x/installation">Laravel</a> Framework PHP
-- <a href="https://www.docker.com/products/docker-desktop/">Docker</a> Desktop instalado
 - <a href="https://getcomposer.org/">Composer</a> (dependências do PHP Laravel)
-- <a href="https://laravel.com/docs/12.x/vite">Vite</a>
-- <a href="https://getcomposer.org/">NodeJS</a> (npm)
-- <a href="https://livewire.laravel.com/docs/4.x/quickstart">Liveware</a>
+- <a href="https://www.docker.com/products/docker-desktop/">Docker</a> Desktop instalado
+- <a href="https://getcomposer.org/">NodeJS</a>
 <br>
 
+### BACK-END: Faça o Clone do Projeto
+#### O projeto encontra-se no GIT na branch main, execute o comando para baixar:
+```bash
+git clone -b main https://github.com/getheo/guilhermetheo916496.git
+```
+<br>
 
-### Faça o Clone do Projeto
+### BACK-END / FRONT-END: Faça o Clone do Projeto
 #### O projeto encontra-se no GIT na branch fullstack, execute o comando para baixar:
 ```bash
 git clone -b fullstack https://github.com/getheo/guilhermetheo916496.git
@@ -63,22 +67,21 @@ composer install
 ```
 <br>
 
-#### Instalação das dependências do Liveware
-```bash
-composer require livewire/livewire
-```
-<br>
-
 #### Instale as bibliotecas do NodeJS
 ```bash
 npm install
 ```
 <br>
 
-
-#### Iniciar uma instância em produção do NodeJS
+#### Build de Assets em produção
 ```bash
 npm run build 
+```
+<br>
+
+#### Instalação das dependências do Livewire
+```bash
+composer require livewire/livewire
 ```
 <br>
 
@@ -97,7 +100,7 @@ docker ps -a
 <br>
 
 ### 🏗️ Configurando o ambiente
-#### Os arquivos (Dockerfile e docker-compose.yml) estão configurados para instanciar e subir os containers:
+#### Os arquivos (Dockerfile e docker-compose.yml, entrypoint.sh, package.json, tailwind.config.js, vite.config.js) estão configurados para instanciar e subir os containers:
 - api-seletivo-seplag
 - db
 - minio_server
@@ -162,18 +165,27 @@ docker exec api-seletivo-seplag php artisan serve
 ```
 <br>
 
-### 🌐 Iniciando o Vite no Container
-Instanciar o servidor web no container (api-seletivo-seplag)
+### 🌐 Iniciando o Vite (gerador css e js da aplicação)
+Instanciar no container (api-seletivo-seplag)
 ```bash
-docker exec api-seletivo-seplag npm run dev
+docker exec api-seletivo-seplag npm run build
 ```
 <br>
 
 ### 🧪 Testando a API
-Para verificar a documentação e realizar os teste, basta acessar pelo navegador (Swagger e/ou POSTMAN):
+Para verificar a documentação da API e realizar os testes, acesse pelo navegador ou ferramentas como Swagger e Postman
 ```bash
 http://localhost:8000/api/documentation
 ```
+<br>
+
+### 🧪 Testando o FRONT END
+Para acessar o frontend da aplicação em ambiente local:
+```bash
+http://localhost:8000/
+```
+<br>
+
 
 É necessário realizar a Autenticação no endpoint `/api/login`.
 ```bash

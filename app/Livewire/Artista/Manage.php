@@ -34,11 +34,13 @@ class Manage extends Component
     {
         $artistas = Artista::where('art_nome', 'ILIKE', '%' . $this->search . '%')
             ->orderBy('art_nome')
-            ->paginate(10);
+            ->paginate(10);        
 
         return view('livewire.artista.manage', [
             'artistas' => $artistas
-        ])->layout('layouts.app'); 
+        ])->layout('layouts.admin', [
+            'title' => 'Artistas'
+        ]);
     }
 
     public function create()
