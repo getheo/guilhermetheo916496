@@ -1,6 +1,7 @@
 # Projeto prático para o PROCESSO SELETIVO CONJUNTO Nº 001/2026/SEPLAG e demais Órgãos
 
-Candidato: Guilherme Théo Coleta Arruda | CPF: 916.496.921-53 | Inscrição: 16352 | Perfil: Engenheiro da Computação- Sênior
+Candidato: Guilherme Théo Coleta Arruda | CPF: 916.496.921-53 
+Inscrição: 16352 | Perfil: Engenheiro da Computação- Sênior
 <br><br>
 ### Projeto Prático - IMPLEMENTAÇÃO BACK END SÊNIOR
 Neste projeto o(a) candidato(a)  deverá implementar uma API REST que disponibilize dados sobre artistas e álbuns
@@ -18,7 +19,6 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 - MinIO (armazenamento das fotos)
 - Docker e Docker Compose
 <br>
-
 ### 🛠 Pré-requisitos
 - <a href="https://git-scm.com/downloads">GIT</a> instalado para baixar o projeto
 - <a href="https://laravel.com/docs/12.x/installation">Laravel</a> Framework PHP
@@ -27,10 +27,17 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 <br>
 
 
-### Faça o Clone do Projeto
+### PROJETO BACK-END: Faça o Clone do Projeto
 #### O projeto encontra-se no GIT na branch main, execute o comando para baixar:
 ```bash
-git clone https://github.com/getheo/guilhermetheo916496.git
+git clone -b main https://github.com/getheo/guilhermetheo916496.git
+```
+<br>
+
+### PROJETO BACK-END / FRONT-END: Faça o Clone do Projeto
+#### O projeto encontra-se no GIT na branch fullstack, execute o comando para baixar:
+```bash
+git clone -b fullstack https://github.com/getheo/guilhermetheo916496.git
 ```
 <br>
 
@@ -191,13 +198,14 @@ Abaixo estão os principais endpoints da API.
 - Artistas
 
 
-| Método  | Endpoint                 | Descrição                      |                      Parâmetros / Corpo                 |
-|---------|--------------------------|--------------------------------|---------------------------------------------------------|
-| `GET`   | `/api/artista`           | Retorna todos os Artistas      | (paginado)                                              |
-| `GET`   | `/api/artista/{id}`      | Retorna um artista específico  | `id`                                                    |
-| `POST`  | `/api/artista`           | Cadastra um artista            | `{ "art_nome": "Nome artista", "art_descricao": ""}`    |
-| `PUT`   | `/api/artista/{id}`      | Atualiza um artista            | `{ "art_nome": "Novo artista" }`                        |
-| `DELETE`| `/api/artista/{id}`      | Exclui um artista              | `id`                                                    |
+| Método  | Endpoint                   | Descrição                      |                      Parâmetros / Corpo                 |
+|---------|----------------------------|--------------------------------|---------------------------------------------------------|
+| `GET`   | `/api/artista`             | Retorna todos os Artistas      | (paginado)                                              |
+| `GET`   | `/api/artista/{id}`        | Retorna um artista específico  | `id`                                                    |
+| `POST`  | `/api/artista`             | Cadastra um artista            | `{ "art_nome": "Nome artista", "art_descricao": ""}`    |
+| `PUT`   | `/api/artista/{id}`        | Atualiza um artista            | `{ "art_nome": "Novo artista" }`                        |
+| `DELETE`| `/api/artista/{id}`        | Exclui um artista              | `id`                                                    |
+| `GET`   | `/api/artistas/{pesquisa}` | Pesquisa um artista por nome   | `pesquisa`                                              |
 
 
 ### 🔄 Exemplo de Requisição
@@ -267,13 +275,14 @@ Abaixo estão os principais endpoints da API.
 - Album
 
 
-| Método  | Endpoint          | Descrição                      |                 Parâmetros / Corpo                     |
-|---------|-------------------|--------------------------------|--------------------------------------------------------|
-| `GET`   | `/api/album`      | Retorna todos os Albuns        | (paginado)                                             |
-| `GET`   | `/api/album/{id}` | Retorna um album específico    | `id`                                                   |
-| `POST`  | `/api/album`      | Cadastra um album              | `{ "alb_titulo": "Nome album", "artista_id": 1 }`      |
-| `PUT`   | `/api/album/{id}` | Atualiza um  album             | `{ "alb_titulo": "Novo nome album", "artista_id": 2 }` |
-| `DELETE`| `/api/album/{id}` | Exclui um album                | `id`                                             |
+| Método  | Endpoint                 | Descrição                      |                 Parâmetros / Corpo                     |
+|---------|--------------------------|--------------------------------|--------------------------------------------------------|
+| `GET`   | `/api/album`             | Retorna todos os Albuns        | (paginado)                                             |
+| `GET`   | `/api/album/{id}`        | Retorna um album específico    | `id`                                                   |
+| `POST`  | `/api/album`             | Cadastra um album              | `{ "alb_titulo": "Nome album", "artista_id": 1 }`      |
+| `PUT`   | `/api/album/{id}`        | Atualiza um  album             | `{ "alb_titulo": "Novo nome album", "artista_id": 2 }` |
+| `DELETE`| `/api/album/{id}`        | Exclui um album                | `id`                                                   |
+| `GET`   | `/api/albuns/{pesquisa}` | Pesquisa um album por título   | `pesquisa`                                             |
 
 
 ### 🔄 Exemplo de Requisição
@@ -306,18 +315,19 @@ Abaixo estão os principais endpoints da API.
 - Musica
 
 
-| Método  | Endpoint           | Descrição                      |                 Parâmetros / Corpo                          |
-|---------|--------------------|--------------------------------|-------------------------------------------------------------|
-| `GET`   | `/api/musica`      | Retorna todos as Músicas       | (paginado)                                                  |
-| `GET`   | `/api/musica/{id}` | Retorna uma música específica  | `id`                                                        |
-| `POST`  | `/api/musica`      | Cadastra uma música            | `{ "album_id": "10", "mus_titulo": "Minha música nova" }`   |
-| `PUT`   | `/api/musica/{id}` | Atualiza uma  música           | `{ "album_id": 10, "mus_titulo": "Novo titulo da música" }` |
-| `DELETE`| `/api/musica/{id}` | Exclui uma música              | `id`                                                        |
+| Método  | Endpoint                  | Descrição                      |                 Parâmetros / Corpo                          |
+|---------|---------------------------|--------------------------------|-------------------------------------------------------------|
+| `GET`   | `/api/musica`             | Retorna todos as Músicas       | (paginado)                                                  |
+| `GET`   | `/api/musica/{id}`        | Retorna uma música específica  | `id`                                                        |
+| `POST`  | `/api/musica`             | Cadastra uma música            | `{ "album_id": "10", "mus_titulo": "Minha música nova" }`   |
+| `PUT`   | `/api/musica/{id}`        | Atualiza uma  música           | `{ "album_id": 10, "mus_titulo": "Novo titulo da música" }` |
+| `DELETE`| `/api/musica/{id}`        | Exclui uma música              | `id`                                                        |
+| `GET`   | `/api/musicas/{pesquisa}` | Pesquisa uma música por título | `pesquisa`                                                  |
 
 
 ### 🔄 Exemplo de Requisição
 
-##### Mostra todas as músicas (GET `/api/album`)
+##### Mostra todas as músicas (GET `/api/musica`)
 
 ```json
 {
@@ -347,8 +357,8 @@ Abaixo estão os principais endpoints da API.
 - Foto Artista
 
 
-| Método  | Endpoint               | Descrição                          |            parâmetros / Corpo           |
-|---------|------------------------|------------------------------------|-----------------------------------------|
+| Método  | Endpoint               | Descrição                          |                parâmetros / Corpo           |
+|---------|------------------------|------------------------------------|---------------------------------------------|
 | `POST`  | `/api/foto-artista`    | Cadastra uma foto para um artista  | `{ "artista_id": "1", "file": "foto.jpg" }` |
 
 
