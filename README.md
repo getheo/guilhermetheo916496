@@ -19,6 +19,7 @@ Pórem, este repositório contém um projeto com uma solução alternativa utili
 - MinIO (armazenamento das fotos)
 - Docker e Docker Compose
 <br>
+
 ### 🛠 Pré-requisitos
 - <a href="https://git-scm.com/downloads">GIT</a> instalado para baixar o projeto
 - <a href="https://laravel.com/docs/12.x/installation">Laravel</a> Framework PHP
